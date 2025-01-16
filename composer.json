@@ -1,10 +1,9 @@
 {
+    "name": "bitbag/user-com-plugin",
     "type": "sylius-plugin",
-    "keywords": [
-        "sylius",
-        "sylius-plugin"
-    ],
-    "license": "proprietary",
+    "keywords": ["sylius", "sylius-plugin"],
+    "description": "Integration with User.com for Sylius.",
+    "license": "MIT",
     "require": {
         "php": "^8.1",
         "sylius/sylius": "~1.13.0",
@@ -60,8 +59,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Acme\\SyliusExamplePlugin\\": "src/",
-            "Tests\\Acme\\SyliusExamplePlugin\\": "tests/"
+            "BitBag\\SyliusUserComPlugin\\": "src/",
+            "Tests\\BitBag\\SyliusUserComPlugin\\": "tests/"
         }
     },
     "autoload-dev": {
