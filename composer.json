@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "bitbag/coding-standard": "^3.0",
         "sylius/sylius": "~1.13.0",
         "symfony/webpack-encore-bundle": "^1.15"
     },
@@ -59,11 +60,16 @@
     },
     "autoload": {
         "psr-4": {
-            "BitBag\\SyliusUserComPlugin\\": "src/",
-            "Tests\\BitBag\\SyliusUserComPlugin\\": "tests/"
+            "BitBag\\SyliusUserComPlugin\\": "src/"
         }
     },
     "autoload-dev": {
+        "psr-4": {
+            "Tests\\BitBag\\SyliusUserComPlugin\\": [
+                "tests/Application/src",
+                "tests"
+            ]
+        },
         "classmap": [
             "tests/Application/Kernel.php"
         ]
