@@ -1,0 +1,97 @@
+<?php
+
+declare(strict_types=1);
+
+namespace BitBag\SyliusUserComPlugin\Api;
+
+use BitBag\SyliusUserComPlugin\Entity\UserComApiAwareInterface;
+use Symfony\Component\HttpFoundation\Request;
+
+final class UserApi extends AbstractClient implements UserApiInterface
+{
+    const PARENT = 'parent';
+    const USERS_LIST = 'users_list';
+
+    public function findUser(
+        UserComApiAwareInterface $resource,
+        string $value,
+        string $field,
+    ): ?array {
+        $url = $this->getApiEndpointUrl(
+            $resource,
+            self::FIND_USER_ENDPOINT,
+            sprintf('?%s=%s', $field, $value),
+        );
+
+        return $this->request(
+            $url,
+            Request::METHOD_GET,
+            $this->buildOptions($resource),
+        );
+    }
+
+    public function getUser(UserComApiAwareInterface $resource, int $userId): ?array
+    {
+        $url = $this->getApiEndpointUrl($resource, sprintf(self::GET_USER_ENDPOINT, $userId));
+
+        return $this->request(
+            $url,
+            Request::METHOD_GET,
+            $this->buildOptions($resource),
+        );
+    }
+
+    public function updateOrCreateUser(UserComApiAwareInterface $resource, array $data): ?array
+    {
+        return $this->request(
+            $this->getApiEndpointUrl($resource, self::UPDATE_OR_CREATE_USER_ENDPOINT),
+            Request::METHOD_POST,
+            $this->buildOptions($resource, [
+                'json' => $data,
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                ],
+            ]),
+        );
+    }
+
+    public function updateUser(UserComApiAwareInterface $resource, int $userId, array $data): ?array
+    {
+        $url = $this->getApiEndpointUrl($resource, sprintf(self::UPDATE_USER_ENDPOINT, $userId));
+
+        return $this->request(
+            $url,
+            Request::METHOD_PUT,
+            $this->buildOptions($resource, ['json' => $data]),
+        );
+    }
+
+    public function createUser(UserComApiAwareInterface $resource, array $data): ?array
+    {
+        return $this->request(
+            $this->getApiEndpointUrl($resource, self::CREATE_USER_ENDPOINT),
+            Request::METHOD_POST,
+            $this->buildOptions($resource, [
+                'json' => $data,
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'User-Agent' => 'BitBag SyliusUserComPlugin',
+                ],
+            ]),
+        );
+    }
+
+    public function mergeUsers(UserComApiAwareInterface $resource, int $parentId, array $usersList): ?array
+    {
+        return $this->request(
+            $this->getApiEndpointUrl($resource, self::MERGE_USERS_ENDPOINT),
+            Request::METHOD_POST,
+            $this->buildOptions($resource, [
+                'json' => [
+                    self::PARENT => $parentId,
+                    self::USERS_LIST => $usersList,
+                ],
+            ]),
+        );
+    }
+}
