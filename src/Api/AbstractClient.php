@@ -70,7 +70,7 @@ abstract class AbstractClient
         UserComApiAwareInterface $resource,
         string $endpoint,
         string $query = null,
-    ) {
+    ): string {
         $url = sprintf(
             '%s/%s/%s/',
             trim($resource->getUserComUrl(), '/'),

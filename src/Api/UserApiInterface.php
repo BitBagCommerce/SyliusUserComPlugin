@@ -21,15 +21,17 @@ interface UserApiInterface
 
     public const FIND_USER_ENDPOINT = 'users/search';
 
-    public const UPDATE_OR_CREATE_USER_ENDPOINT = '/users/update_or_create/';
-
-    public const UPDATE_USER_ENDPOINT = '/users/%s';
-
-    public const UPDATE_USER_BY_CUSTOM_ID_ENDPOINT = '/users-by-id/%s';
-
     public const GET_USER_ENDPOINT = '/users/%s';
 
     public const CREATE_USER_ENDPOINT = '/users/';
+
+    public const UPDATE_USER_ENDPOINT = '/users/%s';
+
+    public const UPDATE_OR_CREATE_USER_ENDPOINT = '/users/update_or_create/';
+
+    public const UPDATE_USER_BY_CUSTOM_ID_ENDPOINT = '/users-by-id/%s';
+
+    public const CREATE_EVENT_FOR_USER_BY_CUSTOM_ID_ENDPOINT = '/users-by-id/%s/events';
 
     public const MERGE_USERS_ENDPOINT = '/users/merge';
 
@@ -46,4 +48,8 @@ interface UserApiInterface
     public function createUser(UserComApiAwareInterface $resource, array $data): ?array;
 
     public function mergeUsers(UserComApiAwareInterface $resource, int $parentId, array $usersList): ?array;
+
+    public function updateUserByCustomId(UserComApiAwareInterface $resource, string $customId, array $data): ?array;
+
+    public function createEventForUser(UserComApiAwareInterface $resource, array $data): ?array;
 }

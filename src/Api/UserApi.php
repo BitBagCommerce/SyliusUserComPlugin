@@ -112,4 +112,18 @@ final class UserApi extends AbstractClient implements UserApiInterface
             $this->buildOptions($resource, ['json' => $data]),
         );
     }
+
+    public function createEventForUser(UserComApiAwareInterface $resource, array $data): ?array
+    {
+        return $this->request(
+            $this->getApiEndpointUrl($resource, self::CREATE_EVENT_FOR_USER_BY_CUSTOM_ID_ENDPOINT),
+            Request::METHOD_POST,
+            $this->buildOptions($resource, [
+                'json' => $data,
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                ],
+            ]),
+        );
+    }
 }
