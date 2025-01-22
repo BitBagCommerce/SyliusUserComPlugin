@@ -18,6 +18,8 @@ interface UserApiInterface
 
     public const UPDATE_USER_ENDPOINT = '/users/%s';
 
+    public const UPDATE_USER_BY_CUSTOM_ID_ENDPOINT = '/users-by-id/%s';
+
     public const GET_USER_ENDPOINT = '/users/%s';
 
     public const CREATE_USER_ENDPOINT = '/users/';

@@ -9,8 +9,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class UserApi extends AbstractClient implements UserApiInterface
 {
-    const PARENT = 'parent';
-    const USERS_LIST = 'users_list';
+    public const PARENT = 'parent';
+
+    public const USERS_LIST = 'users_list';
 
     public function findUser(
         UserComApiAwareInterface $resource,
@@ -92,6 +93,17 @@ final class UserApi extends AbstractClient implements UserApiInterface
                     self::USERS_LIST => $usersList,
                 ],
             ]),
+        );
+    }
+
+    public function updateUserByCustomId(UserComApiAwareInterface $resource, string $customId, array $data): ?array
+    {
+        $url = $this->getApiEndpointUrl($resource, sprintf(self::UPDATE_USER_BY_CUSTOM_ID_ENDPOINT, $customId));
+
+        return $this->request(
+            $url,
+            Request::METHOD_PUT,
+            $this->buildOptions($resource, ['json' => $data]),
         );
     }
 }
