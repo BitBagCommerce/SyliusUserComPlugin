@@ -1,0 +1,4 @@
+bitbag_sylius_user_com_plugin:
+    ui:
+        user_com_api_key: 'Klucz API User.com'
+        user_com_url: 'Adres URL instancjiUser.com'

@@ -16,3 +16,9 @@ sylius_shop:
 
 sylius_api:
     enabled: true
+
+sylius_channel:
+    resources:
+        channel:
+            classes:
+                model: Tests\BitBag\SyliusUserComPlugin\Entity\Channel

@@ -1,0 +1,4 @@
+bitbag_sylius_user_com_plugin:
+    ui:
+        user_com_api_key: 'User.com API Key'
+        user_com_url: 'User.com Instance URL'
