@@ -16,8 +16,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class ProductApi extends AbstractClient implements ProductApiInterface
 {
-    public const GET_PRODUCT_BY_CUSTOM_ID_ENDPOINT = '/products-by-id/%s/product_event/';
-
     public function getProductByCustomId(UserComApiAwareInterface $resource, int $productId): ?array
     {
         $url = $this->getApiEndpointUrl($resource, sprintf(self::GET_PRODUCT_BY_CUSTOM_ID_ENDPOINT, $productId));
