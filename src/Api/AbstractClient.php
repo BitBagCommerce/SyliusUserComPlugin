@@ -71,6 +71,10 @@ abstract class AbstractClient
         string $endpoint,
         string $query = null,
     ): string {
+        if (null === $resource->getUserComUrl()) {
+            throw new \InvalidArgumentException('User.com API key is missing.');
+        }
+
         $url = sprintf(
             '%s/%s/%s/',
             trim($resource->getUserComUrl(), '/'),
@@ -98,6 +102,10 @@ abstract class AbstractClient
     protected function authorizeRequest(
         UserComApiAwareInterface $resource,
     ): string {
+        if (null === $resource->getUserComApiKey()) {
+            throw new \InvalidArgumentException('User.com API key is missing.');
+        }
+
         return sprintf(
             'Token %s',
             $resource->getUserComApiKey(),

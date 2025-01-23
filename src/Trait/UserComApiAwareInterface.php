@@ -13,11 +13,11 @@ namespace BitBag\SyliusUserComPlugin\Trait;
 
 interface UserComApiAwareInterface
 {
-    public function getUserComUrl(): string;
+    public function getUserComUrl(): ?string;
 
     public function setUserComUrl(string $userComUrl): void;
 
-    public function getUserComApiKey(): string;
+    public function getUserComApiKey(): ?string;
 
     public function setUserComApiKey(string $userComApiKey): void;
 }
