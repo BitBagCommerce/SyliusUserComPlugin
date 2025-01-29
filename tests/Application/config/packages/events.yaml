@@ -5,3 +5,8 @@ sylius_ui:
                 user_com_configuration:
                     template: '@BitBagSyliusUserComPlugin/UserApiResource/_userComCredentials.html.twig'
                     priority: 25
+        sylius.shop.layout.stylesheets:
+            blocks:
+                user_com:
+                    template: '@BitBagSyliusUserComPlugin/_userComScripts.html.twig'
+                    priority: 25

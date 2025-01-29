@@ -1,0 +1,25 @@
+{% set channel = sylius.channel %}
+{% if null != channel.userComApiKey and null != channel.userComUrl%}
+    {% set customer = sylius.customer|default(null) %}
+    {% set genderMap =  constant('BitBag\\SyliusUserComPlugin\\Builder\\Payload\\CustomerPayloadBuilderInterface::GENDER_MAP')%}
+    {% set active =  constant('BitBag\\SyliusUserComPlugin\\Builder\\Payload\\CustomerPayloadBuilderInterface::STATUS_USER')%}
+    {% set visitor =  constant('BitBag\\SyliusUserComPlugin\\Builder\\Payload\\CustomerPayloadBuilderInterface::STATUS_VISITOR')%}
+
+    <script data-cfasync="false">window.civchat = {
+            apiKey: "{{ user_com_frontend_api_key }}",
+            name: "{{ customer.name|default(null) }}",
+            user_id: "{{ customer.email|default(null) }}",
+            email: "{{ customer.email|default(null) }}",
+            gender: {{ null != customer ? genderMap[customer.gender] : genderMap['u'] }},
+            status: {{ null != customer ? active : visitor }},
+            phone_number: "{{ customer.phone_number|default(null)}}",
+        }
+
+        {% set routes =  constant('BitBag\\SyliusUserComPlugin\\EventSubscriber\\CustomerProfileUpdatedSubscriberInterface::API_INTEGRATION_ROUTES')%}
+     </script>
+    <script data-cfasync="false" src={{ channel.userComUrl ~ "widget.js" }}>
+        {% if null == sylius.customer and app.request.attributes.get('_route') in routes %}
+            UE.resetAuth({'apiKey': {{ user_com_frontend_api_key}}})
+        {% endif %}
+    </script>
+{% endif %}
