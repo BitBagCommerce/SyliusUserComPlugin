@@ -51,5 +51,5 @@ interface UserApiInterface
 
     public function updateUserByCustomId(UserComApiAwareInterface $resource, string $customId, array $data): ?array;
 
-    public function createEventForUser(UserComApiAwareInterface $resource, array $data): ?array;
+    public function createEventForUser(UserComApiAwareInterface $resource, string $userCustomId, array $data): ?array;
 }

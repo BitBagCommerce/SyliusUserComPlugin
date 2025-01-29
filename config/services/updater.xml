@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <defaults autowire="false" autoconfigure="false"/>
+        <service
+            id="bit_bag.sylius_user_com_plugin.updater.customer_without_key_updater"
+            class="BitBag\SyliusUserComPlugin\Updater\CustomerWithoutKeyUpdater"
+        >
+            <argument type="service" id="bit_bag.sylius_user_com_plugin.builder.payload.customer_payload_builder"/>
+            <argument type="service" id="sylius.context.channel.composite"/>
+            <argument type="service" id="bit_bag.sylius_user_com_plugin.api.user_api"/>
+            <argument type="service" id="bit_bag.sylius_user_com_plugin.manager.cookie_manager"/>
+        </service>
+
+        <service
+            id="bit_bag.sylius_user_com_plugin.updater.customer_with_key_updater"
+            class="BitBag\SyliusUserComPlugin\Updater\CustomerWithKeyUpdater"
+        >
+            <argument type="service" id="bit_bag.sylius_user_com_plugin.builder.payload.customer_payload_builder"/>
+            <argument type="service" id="sylius.context.channel.composite"/>
+            <argument type="service" id="bit_bag.sylius_user_com_plugin.api.user_api"/>
+            <argument type="service" id="bit_bag.sylius_user_com_plugin.manager.cookie_manager"/>
+        </service>
+    </services>
+</container>
