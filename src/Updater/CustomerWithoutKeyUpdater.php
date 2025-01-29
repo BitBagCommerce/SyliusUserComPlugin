@@ -61,7 +61,7 @@ class CustomerWithoutKeyUpdater implements CustomerWithoutKeyUpdaterInterface
         if (false === is_array($user) || false === array_key_exists('id', $user)) {
             throw new \RuntimeException('User was not created or updated.');
         }
-        $this->sendEvent($user['id'], $eventName);
+        $this->sendEvent($user['email'], $eventName);
 
         return $user;
     }
