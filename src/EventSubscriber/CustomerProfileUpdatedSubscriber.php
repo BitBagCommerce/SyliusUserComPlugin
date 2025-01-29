@@ -38,6 +38,7 @@ final class CustomerProfileUpdatedSubscriber implements CustomerProfileUpdatedSu
         ;
 
         $subject = $event->getData();
+
         if ($subject instanceof CustomerInterface) {
             $this->customerUpdateManager->manageChange(
                 $eventName,
@@ -50,11 +51,15 @@ final class CustomerProfileUpdatedSubscriber implements CustomerProfileUpdatedSu
         }
 
         if ($subject instanceof OrderInterface) {
+            $customer = $subject->getCustomer();
+            if (null !== $customer && !$customer instanceof CustomerInterface) {
+                throw new \RuntimeException('Customer is not set or is not an instance of CustomerInterface');
+            }
             $this->customerUpdateManager->manageChange(
                 $eventName,
-                $subject->getCustomer(),
+                $customer,
                 $subject->getShippingAddress(),
-                $subject->getCustomer()?->getEmail(),
+                $customer?->getEmail(),
             );
         }
     }

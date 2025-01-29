@@ -12,7 +12,6 @@ declare(strict_types=1);
 namespace BitBag\SyliusUserComPlugin\Form\Extension;
 
 use BitBag\SyliusUserComPlugin\EventSubscriber\CustomerProfileUpdatedSubscriber;
-use BitBag\SyliusUserComPlugin\Manager\CookieManagerInterface;
 use Sylius\Bundle\CoreBundle\Form\Type\Checkout\AddressType;
 use Sylius\Bundle\CoreBundle\Form\Type\Customer\CustomerRegistrationType;
 use Sylius\Bundle\CustomerBundle\Form\Type\CustomerProfileType;
@@ -25,12 +24,11 @@ final class UserComCustomerInformationTypeExtension extends AbstractTypeExtensio
 {
     public function __construct(
         private readonly CustomerProfileUpdatedSubscriber $customerProfileUpdatedSubscriber,
-        private readonly CookieManagerInterface $cookieManager,
         private readonly CustomerContextInterface $customerContext,
     ) {
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->addEventSubscriber($this->customerProfileUpdatedSubscriber);
 
