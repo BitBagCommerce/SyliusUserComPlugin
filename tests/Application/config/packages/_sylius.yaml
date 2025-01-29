@@ -22,9 +22,3 @@ sylius_channel:
         channel:
             classes:
                 model: Tests\BitBag\SyliusUserComPlugin\Entity\Channel
-
-sylius_customer:
-    resources:
-        customer:
-            classes:
-                model: Tests\BitBag\SyliusUserComPlugin\Entity\Customer
