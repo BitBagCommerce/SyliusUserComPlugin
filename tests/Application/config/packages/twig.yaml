@@ -1,7 +1,14 @@
+parameters:
+    user_com.frontend_api_key: '%env(USER_COM_FRONTEND_API_KEY)%'
+
+
 twig:
     paths: ['%kernel.project_dir%/templates']
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+    globals:
+        user_com_frontend_api_key: '%user_com.frontend_api_key%'
+
 
 services:
     _defaults:
