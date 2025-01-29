@@ -27,7 +27,7 @@ final class CookieManager implements CookieManagerInterface
             return null;
         }
 
-        $value = $request->cookies->get(self::COOKIE_NAME);
+        $value = $request->cookies->get(self::CHAT_COOKIE_NAME);
 
         return null === $value ? null : (string) $value;
     }
@@ -38,6 +38,6 @@ final class CookieManager implements CookieManagerInterface
         if (null === $request) {
             return;
         }
-        $request->cookies->set(self::COOKIE_NAME, $value);
+        $request->cookies->set(self::CHAT_COOKIE_NAME, $value);
     }
 }

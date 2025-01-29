@@ -19,7 +19,7 @@
      </script>
     <script data-cfasync="false" src={{ channel.userComUrl ~ "widget.js" }}>
         {% if null == sylius.customer and app.request.attributes.get('_route') in routes %}
-        UE.resetAuth({'apiKey': {{ user_com_frontend_api_key}}})
+            UE.resetAuth({'apiKey': {{ user_com_frontend_api_key}}})
         {% endif %}
     </script>
 {% endif %}

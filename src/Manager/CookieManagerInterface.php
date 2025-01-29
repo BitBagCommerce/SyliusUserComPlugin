@@ -13,7 +13,7 @@ namespace BitBag\SyliusUserComPlugin\Manager;
 
 interface CookieManagerInterface
 {
-    public const COOKIE_NAME = '__ca__chat';
+    public const CHAT_COOKIE_NAME = '__ca__chat';
 
     public function getUserComCookie(): ?string;
 
