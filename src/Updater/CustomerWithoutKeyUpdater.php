@@ -77,7 +77,9 @@ class CustomerWithoutKeyUpdater implements CustomerWithoutKeyUpdaterInterface
     protected function getApiAwareResource(): UserComApiAwareInterface
     {
         $apiAwareResource = $this->channelContext->getChannel();
-        Assert::isInstanceOf($apiAwareResource, UserComApiAwareInterface::class);
+        if (false === $apiAwareResource instanceof UserComApiAwareInterface) {
+            throw new \RuntimeException('Channel does not implement UserComApiAwareInterface.');
+        }
 
         return $apiAwareResource;
     }
