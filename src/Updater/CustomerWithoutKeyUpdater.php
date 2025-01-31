@@ -88,9 +88,7 @@ class CustomerWithoutKeyUpdater implements CustomerWithoutKeyUpdaterInterface
             $this->getApiAwareResource(),
             $userCustomId,
             [
-                'data' => [
-                    'event' => $event,
-                ],
+                'name' => $event,
             ],
         );
     }
