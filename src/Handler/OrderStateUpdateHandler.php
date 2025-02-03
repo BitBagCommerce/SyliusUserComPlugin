@@ -38,6 +38,10 @@ final class OrderStateUpdateHandler implements OrderStateUpdateHandlerInterface
             throw new \InvalidArgumentException('Channel must implement UserComApiAwareInterface');
         }
 
+        if (null === $channel->getUserComUrl() || null === $channel->getUserComApiKey()) {
+            return;
+        }
+
         if (null === $order->getNumber()) {
             throw new \InvalidArgumentException('Order number cannot be null while sending order data to User.com');
         }
