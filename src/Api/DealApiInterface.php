@@ -23,7 +23,7 @@ interface DealApiInterface
 
     public function updateDealByCustomId(UserComApiAwareInterface $resource, string $customId, array $data): ?array;
 
-    public function createDeal(UserComApiAwareInterface $resource, array $data): ?array;
+    public function createDeal(UserComApiAwareInterface $resource, array $data, string $email): ?array;
 
-    public function updateOrCreateDeal(UserComApiAwareInterface $resource, array $data): ?array;
+    public function updateOrCreateDeal(UserComApiAwareInterface $resource, array $data, string $email): ?array;
 }

@@ -49,6 +49,17 @@ final class UserApi extends AbstractClient implements UserApiInterface
         );
     }
 
+    public function getUserByCustomId(UserComApiAwareInterface $resource, string $customId): ?array
+    {
+        $url = $this->getApiEndpointUrl($resource, sprintf(self::GET_USER_ENDPOINT, $customId));
+
+        return $this->request(
+            $url,
+            Request::METHOD_GET,
+            $this->buildOptions($resource),
+        );
+    }
+
     public function updateOrCreateUser(UserComApiAwareInterface $resource, array $data): ?array
     {
         return $this->request(

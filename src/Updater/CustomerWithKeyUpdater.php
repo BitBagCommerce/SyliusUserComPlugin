@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusUserComPlugin\Updater;
 
+use BitBag\SyliusUserComPlugin\Api\AbstractClient;
 use BitBag\SyliusUserComPlugin\Api\UserApiInterface;
 use BitBag\SyliusUserComPlugin\Builder\Payload\CustomerPayloadBuilderInterface;
 use BitBag\SyliusUserComPlugin\Manager\CookieManagerInterface;
@@ -82,7 +83,9 @@ class CustomerWithKeyUpdater extends CustomerWithoutKeyUpdater implements Custom
             UserApiInterface::EMAIL_PROPERTY,
         );
 
-        if (null !== $userByEmailFromForm) {
+        if (null !== $userByEmailFromForm &&
+            false === array_key_exists(AbstractClient::ERROR, $userByEmailFromForm)
+        ) {
             $user = $this->userApi->updateUser(
                 $apiAwareResource,
                 $userByEmailFromForm['id'],
@@ -92,7 +95,7 @@ class CustomerWithKeyUpdater extends CustomerWithoutKeyUpdater implements Custom
             $this->userApi->mergeUsers($apiAwareResource, $userByEmailFromForm['id'], [$userFoundByKey['id']]);
         }
 
-        if (!isset($user)) {
+        if (!isset($user) || false === array_key_exists(AbstractClient::ERROR, $user)) {
             $user = $this->userApi->createUser($apiAwareResource, $payload);
         }
 

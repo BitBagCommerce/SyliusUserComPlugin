@@ -23,6 +23,8 @@ interface UserApiInterface
 
     public const GET_USER_ENDPOINT = '/users/%s';
 
+    public const GET_USER_BY_CUSTOM_ID_ENDPOINT = '/users-by-id/%s';
+
     public const CREATE_USER_ENDPOINT = '/users/';
 
     public const UPDATE_USER_ENDPOINT = '/users/%s';
@@ -40,6 +42,10 @@ interface UserApiInterface
         string $value,
         string $field,
     ): ?array;
+
+    public function getUser(UserComApiAwareInterface $resource, int $userId): ?array;
+
+    public function getUserByCustomId(UserComApiAwareInterface $resource, string $customId): ?array;
 
     public function updateOrCreateUser(UserComApiAwareInterface $resource, array $data): ?array;
 

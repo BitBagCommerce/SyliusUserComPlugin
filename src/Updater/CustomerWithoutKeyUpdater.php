@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusUserComPlugin\Updater;
 
+use BitBag\SyliusUserComPlugin\Api\AbstractClient;
 use BitBag\SyliusUserComPlugin\Api\UserApiInterface;
 use BitBag\SyliusUserComPlugin\Builder\Payload\CustomerPayloadBuilderInterface;
 use BitBag\SyliusUserComPlugin\Manager\CookieManagerInterface;
@@ -48,7 +49,9 @@ class CustomerWithoutKeyUpdater implements CustomerWithoutKeyUpdaterInterface
 
         $payload = $this->buildPayload($email, $customer, $address);
 
-        if (null !== $customerFoundByEmail) {
+        if (null !== $customerFoundByEmail &&
+            false === array_key_exists(AbstractClient::ERROR, $customerFoundByEmail)
+        ) {
             $user = $this->userApi->updateUser(
                 $userApiAwareResource,
                 $customerFoundByEmail['id'],

@@ -6,7 +6,20 @@
         <service
             id="bit_bag.sylius_user_com_plugin.builder.payload.customer_payload_builder"
             class="BitBag\SyliusUserComPlugin\Builder\Payload\CustomerPayloadBuilder"
+        />
+        <service
+            id="bit_bag.sylius_user_com_plugin.builder.payload.order_payload_builder"
+            class="BitBag\SyliusUserComPlugin\Builder\Payload\OrderPayloadBuilder"
         >
+            <argument type="service" id="bit_bag.sylius_user_com_plugin.builder.payload.order_item_payload_builder"/>
         </service>
+        <service
+            id="bit_bag.sylius_user_com_plugin.builder.payload.order_item_payload_builder"
+            class="BitBag\SyliusUserComPlugin\Builder\Payload\OrderItemPayloadBuilder"
+        />
+        <service
+            id="bit_bag.sylius_user_com_plugin.builder.payload.product_event_payload_builder"
+            class="BitBag\SyliusUserComPlugin\Builder\Payload\ProductEventPayloadBuilder"
+        />
     </services>
 </container>
