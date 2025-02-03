@@ -11,12 +11,9 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusUserComPlugin\Form\Extension;
 
-use BitBag\SyliusUserComPlugin\Provider\UserComApiAwareResourceProviderInterface;
 use BitBag\SyliusUserComPlugin\Trait\UserComApiAwareInterface;
 use Sylius\Bundle\ChannelBundle\Form\Type\ChannelType;
 use Symfony\Component\Form\AbstractTypeExtension;
-use Symfony\Component\Form\Event\PostSubmitEvent;
-use Symfony\Component\Form\Event\PreSubmitEvent;
 use Symfony\Component\Form\Event\SubmitEvent;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -28,13 +25,6 @@ use Symfony\Component\Validator\Constraints\Url;
 final class UserComApiAwareTypeExtension extends AbstractTypeExtension
 {
     private const USER_COM_API_KEY_PROPERTY = 'userComApiKey';
-
-    private const USER_COM_URL_KEY = 'userComUrl';
-
-    public function __construct(
-        private readonly UserComApiAwareResourceProviderInterface $provider,
-    ) {
-    }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -66,7 +56,11 @@ final class UserComApiAwareTypeExtension extends AbstractTypeExtension
 
                 $newPassword = $form->get(self::USER_COM_API_KEY_PROPERTY)->getData();
 
-                if (null !==$newPassword && $data instanceof UserComApiAwareInterface) {
+                if (
+                    null !== $newPassword
+                    && is_string($newPassword)
+                    && $data instanceof UserComApiAwareInterface
+                ) {
                     $data->setUserComApiKey($newPassword);
                 }
             });
