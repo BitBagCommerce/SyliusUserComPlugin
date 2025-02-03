@@ -15,7 +15,14 @@ use BitBag\SyliusUserComPlugin\Trait\UserComApiAwareInterface;
 
 interface ProductApiInterface
 {
-    public const GET_PRODUCT_BY_CUSTOM_ID_ENDPOINT = '/products-by-id/%s/product_event/';
+    public const CREATE_PRODUCT_EVENT_BY_CUSTOM_ID_ENDPOINT = '/products-by-id/%s/product_event/';
 
-    public function getProductByCustomId(UserComApiAwareInterface $resource, int $productId): ?array;
+    public const CREATE_PRODUCT_ENDPOINT = '/products/';
+
+    public function createProductEventByCustomId(
+        UserComApiAwareInterface $resource,
+        int $productId,
+        array $payload,
+        string $productName,
+    ): ?array;
 }

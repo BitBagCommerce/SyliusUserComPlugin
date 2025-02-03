@@ -1,0 +1,12 @@
+winzou_state_machine:
+    sylius_order:
+        class: "%sylius.model.order.class%"
+        property_path: state
+        graph: sylius_order
+        state_machine_class: "%sylius.state_machine.class%"
+        callbacks:
+            after:
+                order_user_com_update:
+                    on: ['create', 'cancel', 'fulfill']
+                    do: ['@bit_bag.sylius_user_com_plugin.handler.order_state_update_handler', 'handle']
+                    args: ['object']

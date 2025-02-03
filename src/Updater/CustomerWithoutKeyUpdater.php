@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusUserComPlugin\Updater;
 
+use BitBag\SyliusUserComPlugin\Api\AbstractClient;
 use BitBag\SyliusUserComPlugin\Api\UserApiInterface;
 use BitBag\SyliusUserComPlugin\Builder\Payload\CustomerPayloadBuilderInterface;
 use BitBag\SyliusUserComPlugin\Manager\CookieManagerInterface;
@@ -48,7 +49,9 @@ class CustomerWithoutKeyUpdater implements CustomerWithoutKeyUpdaterInterface
 
         $payload = $this->buildPayload($email, $customer, $address);
 
-        if (null !== $customerFoundByEmail) {
+        if (null !== $customerFoundByEmail &&
+            false === array_key_exists(AbstractClient::ERROR, $customerFoundByEmail)
+        ) {
             $user = $this->userApi->updateUser(
                 $userApiAwareResource,
                 $customerFoundByEmail['id'],
@@ -61,7 +64,7 @@ class CustomerWithoutKeyUpdater implements CustomerWithoutKeyUpdaterInterface
         if (false === is_array($user) || false === array_key_exists('id', $user)) {
             throw new \RuntimeException('User was not created or updated.');
         }
-        $this->sendEvent($user['id'], $eventName);
+        $this->sendEvent($user['email'], $eventName);
 
         return $user;
     }
@@ -77,7 +80,9 @@ class CustomerWithoutKeyUpdater implements CustomerWithoutKeyUpdaterInterface
     protected function getApiAwareResource(): UserComApiAwareInterface
     {
         $apiAwareResource = $this->channelContext->getChannel();
-        Assert::isInstanceOf($apiAwareResource, UserComApiAwareInterface::class);
+        if (false === $apiAwareResource instanceof UserComApiAwareInterface) {
+            throw new \RuntimeException('Channel does not implement UserComApiAwareInterface.');
+        }
 
         return $apiAwareResource;
     }
@@ -88,9 +93,7 @@ class CustomerWithoutKeyUpdater implements CustomerWithoutKeyUpdaterInterface
             $this->getApiAwareResource(),
             $userCustomId,
             [
-                'data' => [
-                    'event' => $event,
-                ],
+                'name' => $event,
             ],
         );
     }

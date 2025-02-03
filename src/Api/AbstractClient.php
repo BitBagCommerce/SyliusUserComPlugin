@@ -19,6 +19,8 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 abstract class AbstractClient
 {
+    public const ERROR = 'error';
+
     private const API_ENDPOINT_PREFIX = '/api/public/';
 
     public function __construct(
@@ -31,6 +33,7 @@ abstract class AbstractClient
         string $path,
         string $method,
         array $options,
+        bool $retrial = false,
     ): ?array {
         try {
             /** @var ResponseInterface $response */
@@ -41,6 +44,12 @@ abstract class AbstractClient
             );
 
             $status = $response->getStatusCode();
+            if ($status === Response::HTTP_TOO_MANY_REQUESTS && !$retrial) {
+                sleep(1);
+
+                return $this->request($path, $method, $options, true);
+            }
+
             if ($status >= Response::HTTP_OK && $status < Response::HTTP_MULTIPLE_CHOICES) {
                 return $response->toArray();
             }
@@ -61,6 +70,12 @@ abstract class AbstractClient
                 'method' => $method,
                 'options' => $options,
             ]);
+
+            if (isset($response) &&
+                $response->getStatusCode() === Response::HTTP_NOT_FOUND
+            ) {
+                return [self::ERROR => $response->getStatusCode()];
+            }
 
             return null;
         }

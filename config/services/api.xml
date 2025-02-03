@@ -11,6 +11,7 @@
         <service id="bit_bag.sylius_user_com_plugin.api.deal_api" class="BitBag\SyliusUserComPlugin\Api\DealApi">
             <argument type="service" id="http_client"/>
             <argument type="service" id="monolog.logger"/>
+            <argument type="service" id="bit_bag.sylius_user_com_plugin.api.user_api"/>
         </service>
 
         <service id="bit_bag.sylius_user_com_plugin.api.product_api" class="BitBag\SyliusUserComPlugin\Api\ProductApi">
