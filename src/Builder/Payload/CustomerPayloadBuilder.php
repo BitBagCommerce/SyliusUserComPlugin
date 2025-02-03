@@ -23,8 +23,8 @@ final class CustomerPayloadBuilder implements CustomerPayloadBuilderInterface
         }
 
         $payload = [
-            'custom_id' => $customer?->getEmail() ?? $email,
-            'email' => $customer?->getEmail() ?? $email,
+            'custom_id' => strtolower($customer?->getEmail() ?? $email),
+            'email' => strtolower($customer?->getEmail() ?? $email),
             'firstName' => $customer?->getFirstName(),
             'lastName' => $customer?->getLastName(),
             'phone_number' => $customer?->getPhoneNumber(),

@@ -15,6 +15,7 @@ use BitBag\SyliusUserComPlugin\Api\DealApiInterface;
 use BitBag\SyliusUserComPlugin\Api\ProductApiInterface;
 use BitBag\SyliusUserComPlugin\Builder\Payload\OrderPayloadBuilderInterface;
 use BitBag\SyliusUserComPlugin\Builder\Payload\ProductEventPayloadBuilderInterface;
+use BitBag\SyliusUserComPlugin\Provider\UserComApiAwareResourceProviderInterface;
 use BitBag\SyliusUserComPlugin\Trait\UserComApiAwareInterface;
 use Psr\Log\LoggerInterface;
 use Sylius\Component\Core\Model\OrderInterface;
@@ -28,17 +29,14 @@ final class OrderStateUpdateHandler implements OrderStateUpdateHandlerInterface
         private readonly DealApiInterface $dealApi,
         private readonly ProductApiInterface $productApi,
         private readonly LoggerInterface $logger,
+        private readonly UserComApiAwareResourceProviderInterface $provider,
     ) {
     }
 
     public function handle(OrderInterface $order): void
     {
-        $channel = $order->getChannel();
-        if (false === $channel instanceof UserComApiAwareInterface) {
-            throw new \InvalidArgumentException('Channel must implement UserComApiAwareInterface');
-        }
-
-        if (null === $channel->getUserComUrl() || null === $channel->getUserComApiKey()) {
+        $resource = $this->provider->getApiAwareResourceByOrder($order);
+        if (null === $resource || null === $resource->getUserComUrl() || null === $resource->getUserComApiKey()) {
             return;
         }
 
@@ -51,10 +49,12 @@ final class OrderStateUpdateHandler implements OrderStateUpdateHandlerInterface
 
         $email = $customer->getEmail();
         Assert::notNull($email, 'Order customer email cannot be null while sending order data to User.com');
-        $this->createProductEvents($order, $channel, $email);
+        $email = strtolower($email);
+
+        $this->createProductEvents($order, $resource, $email);
 
         if (OrderInterface::STATE_NEW === $order->getState()) {
-            $this->dealApi->createDeal($channel, $this->orderPayloadBuilder->build($order), $email);
+            $this->dealApi->createDeal($resource, $this->orderPayloadBuilder->build($order), $email);
 
             return;
         }
@@ -64,7 +64,7 @@ final class OrderStateUpdateHandler implements OrderStateUpdateHandlerInterface
             Assert::notNull($orderNumber, 'Order number cannot be null while sending order data to User.com');
 
             $this->dealApi->updateDealByCustomId(
-                $channel,
+                $resource,
                 $orderNumber,
                 $this->orderPayloadBuilder->build($order),
             );

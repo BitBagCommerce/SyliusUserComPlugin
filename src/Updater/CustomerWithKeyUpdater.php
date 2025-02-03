@@ -15,8 +15,8 @@ use BitBag\SyliusUserComPlugin\Api\AbstractClient;
 use BitBag\SyliusUserComPlugin\Api\UserApiInterface;
 use BitBag\SyliusUserComPlugin\Builder\Payload\CustomerPayloadBuilderInterface;
 use BitBag\SyliusUserComPlugin\Manager\CookieManagerInterface;
+use BitBag\SyliusUserComPlugin\Provider\UserComApiAwareResourceProviderInterface;
 use BitBag\SyliusUserComPlugin\Trait\UserComApiAwareInterface;
-use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Core\Model\AddressInterface;
 use Sylius\Component\Core\Model\CustomerInterface;
 
@@ -24,11 +24,16 @@ class CustomerWithKeyUpdater extends CustomerWithoutKeyUpdater implements Custom
 {
     public function __construct(
         CustomerPayloadBuilderInterface $customerPayloadBuilder,
-        ChannelContextInterface $channelContext,
         UserApiInterface $userApi,
         CookieManagerInterface $cookieManager,
+        UserComApiAwareResourceProviderInterface $provider,
     ) {
-        parent::__construct($customerPayloadBuilder, $channelContext, $userApi, $cookieManager);
+        parent::__construct(
+            $customerPayloadBuilder,
+            $userApi,
+            $cookieManager,
+            $provider,
+        );
     }
 
     public function updateWithUserKey(
@@ -38,8 +43,10 @@ class CustomerWithKeyUpdater extends CustomerWithoutKeyUpdater implements Custom
         ?AddressInterface $address = null,
         ?string $email = null,
     ): array|null {
-        $apiAwareResource = $this->getApiAwareResource();
-
+        $apiAwareResource = $this->userComApiAwareResourceProvider->getApiAwareResource();
+        if (null === $apiAwareResource) {
+            return null;
+        }
         $email = $this->getEmail($customer, $email);
         $payload = $this->buildPayload($email, $customer, $address);
 
@@ -69,7 +76,10 @@ class CustomerWithKeyUpdater extends CustomerWithoutKeyUpdater implements Custom
             );
         }
 
-        if (null !== $customer && $userFoundByKey['email'] === $customer->getEmail()) {
+        if (null !== $customer &&
+            null !== $customer->getEmail() &&
+            $userFoundByKey['email'] === strtolower($customer->getEmail())
+        ) {
             return $this->userApi->updateUser(
                 $apiAwareResource,
                 $userFoundByKey['id'],
@@ -107,7 +117,7 @@ class CustomerWithKeyUpdater extends CustomerWithoutKeyUpdater implements Custom
         }
 
         $this->cookieManager->setUserComCookie($user['user_key']);
-        $this->sendEvent($user['email'], $eventName);
+        $this->sendEvent($apiAwareResource, $user['email'], $eventName);
 
         return $user;
     }
@@ -140,7 +150,7 @@ class CustomerWithKeyUpdater extends CustomerWithoutKeyUpdater implements Custom
             $this->userApi->mergeUsers($apiAwareResource, $id, [$userFromUserKey]);
         }
 
-        $this->sendEvent($email, $eventName);
+        $this->sendEvent($apiAwareResource, $email, $eventName);
 
         return $user;
     }

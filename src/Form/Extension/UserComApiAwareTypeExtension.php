@@ -11,16 +11,31 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusUserComPlugin\Form\Extension;
 
+use BitBag\SyliusUserComPlugin\Provider\UserComApiAwareResourceProviderInterface;
+use BitBag\SyliusUserComPlugin\Trait\UserComApiAwareInterface;
 use Sylius\Bundle\ChannelBundle\Form\Type\ChannelType;
 use Symfony\Component\Form\AbstractTypeExtension;
+use Symfony\Component\Form\Event\PostSubmitEvent;
+use Symfony\Component\Form\Event\PreSubmitEvent;
+use Symfony\Component\Form\Event\SubmitEvent;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Url;
 
 final class UserComApiAwareTypeExtension extends AbstractTypeExtension
 {
+    private const USER_COM_API_KEY_PROPERTY = 'userComApiKey';
+
+    private const USER_COM_URL_KEY = 'userComUrl';
+
+    public function __construct(
+        private readonly UserComApiAwareResourceProviderInterface $provider,
+    ) {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -30,9 +45,7 @@ final class UserComApiAwareTypeExtension extends AbstractTypeExtension
                 [
                     'label' => 'bitbag_sylius_user_com_plugin.ui.user_com_api_key',
                     'required' => false,
-                    'constraints' => [
-                        new NotBlank(['groups' => ['sylius']]),
-                    ],
+                    'mapped' => false,
                 ],
             )
             ->add(
@@ -46,7 +59,17 @@ final class UserComApiAwareTypeExtension extends AbstractTypeExtension
                         new Url(['groups' => ['sylius']]),
                     ],
                 ],
-            );
+            )
+            ->addEventListener(FormEvents::SUBMIT, function (SubmitEvent $event) {
+                $data = $event->getData();
+                $form = $event->getForm();
+
+                $newPassword = $form->get(self::USER_COM_API_KEY_PROPERTY)->getData();
+
+                if (null !==$newPassword && $data instanceof UserComApiAwareInterface) {
+                    $data->setUserComApiKey($newPassword);
+                }
+            });
     }
 
     public static function getExtendedTypes(): iterable

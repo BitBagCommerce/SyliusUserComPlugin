@@ -8,9 +8,9 @@
             class="BitBag\SyliusUserComPlugin\Updater\CustomerWithoutKeyUpdater"
         >
             <argument type="service" id="bit_bag.sylius_user_com_plugin.builder.payload.customer_payload_builder"/>
-            <argument type="service" id="sylius.context.channel.composite"/>
             <argument type="service" id="bit_bag.sylius_user_com_plugin.api.user_api"/>
             <argument type="service" id="bit_bag.sylius_user_com_plugin.manager.cookie_manager"/>
+            <argument type="service" id="bit_bag.sylius_user_com_plugin.provider.user_com_api_aware_resource_provider"/>
         </service>
 
         <service
@@ -18,9 +18,9 @@
             class="BitBag\SyliusUserComPlugin\Updater\CustomerWithKeyUpdater"
         >
             <argument type="service" id="bit_bag.sylius_user_com_plugin.builder.payload.customer_payload_builder"/>
-            <argument type="service" id="sylius.context.channel.composite"/>
             <argument type="service" id="bit_bag.sylius_user_com_plugin.api.user_api"/>
             <argument type="service" id="bit_bag.sylius_user_com_plugin.manager.cookie_manager"/>
+            <argument type="service" id="bit_bag.sylius_user_com_plugin.provider.user_com_api_aware_resource_provider"/>
         </service>
     </services>
 </container>
