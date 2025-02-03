@@ -39,10 +39,13 @@ final class OrderPayloadBuilder implements OrderPayloadBuilderInterface
 
     private function getStage(OrderInterface $order): int
     {
-        return match ($order->getState()) {
+        $state = $order->getState();
+
+        return match ($state) {
             OrderInterface::STATE_NEW => 1,
             OrderInterface::STATE_FULFILLED => 2,
             OrderInterface::STATE_CANCELLED => 3,
+            default => throw new \RuntimeException(sprintf('State %s is not supported', $state)),
         };
     }
 }

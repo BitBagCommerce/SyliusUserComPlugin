@@ -60,9 +60,12 @@ final class OrderStateUpdateHandler implements OrderStateUpdateHandlerInterface
         }
 
         if (OrderInterface::STATE_FULFILLED === $order->getState() || OrderInterface::STATE_CANCELLED === $order->getState()) {
+            $orderNumber = $order->getNumber();
+            Assert::notNull($orderNumber, 'Order number cannot be null while sending order data to User.com');
+
             $this->dealApi->updateDealByCustomId(
                 $channel,
-                $order->getNumber(),
+                $orderNumber,
                 $this->orderPayloadBuilder->build($order),
             );
 

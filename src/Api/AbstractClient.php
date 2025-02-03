@@ -33,7 +33,7 @@ abstract class AbstractClient
         string $path,
         string $method,
         array $options,
-        ?bool $retrial = false,
+        bool $retrial = false,
     ): ?array {
         try {
             /** @var ResponseInterface $response */
@@ -71,7 +71,7 @@ abstract class AbstractClient
                 'options' => $options,
             ]);
 
-            if (
+            if (isset($response) &&
                 $response->getStatusCode() === Response::HTTP_NOT_FOUND
             ) {
                 return [self::ERROR => $response->getStatusCode()];

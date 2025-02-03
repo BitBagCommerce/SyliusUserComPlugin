@@ -19,6 +19,7 @@ final class OrderItemPayloadBuilder implements OrderItemPayloadBuilderInterface
     {
         $currency = $order->getCurrencyCode();
         $orderItemCodes = [];
+        $orderProducts = [];
         foreach ($order->getItems() as $orderItem) {
             $variant = $orderItem->getVariant();
             $orderItemCodes[] = $variant?->getId();
