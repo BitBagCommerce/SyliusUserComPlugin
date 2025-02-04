@@ -42,7 +42,7 @@ final class UserComAgreementsController
                 $payload = stream_get_contents($payload);
             }
 
-            if (false === $payload) {
+            if (!is_string($payload)) {
                 return new JsonResponse('Invalid JSON payload', Response::HTTP_BAD_REQUEST);
             }
 

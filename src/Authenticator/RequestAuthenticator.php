@@ -44,7 +44,7 @@ final class RequestAuthenticator implements RequestAuthenticatorInterface
             $content = stream_get_contents($content);
         }
 
-        if (false === $content) {
+        if (!is_string($content)) {
             throw new \InvalidArgumentException('Invalid JSON payload', Response::HTTP_BAD_REQUEST);
         }
 
