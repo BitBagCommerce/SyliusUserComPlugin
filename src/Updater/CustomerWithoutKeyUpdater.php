@@ -15,8 +15,8 @@ use BitBag\SyliusUserComPlugin\Api\AbstractClient;
 use BitBag\SyliusUserComPlugin\Api\UserApiInterface;
 use BitBag\SyliusUserComPlugin\Builder\Payload\CustomerPayloadBuilderInterface;
 use BitBag\SyliusUserComPlugin\Manager\CookieManagerInterface;
+use BitBag\SyliusUserComPlugin\Provider\UserComApiAwareResourceProviderInterface;
 use BitBag\SyliusUserComPlugin\Trait\UserComApiAwareInterface;
-use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Sylius\Component\Core\Model\AddressInterface;
 use Sylius\Component\Core\Model\CustomerInterface;
 use Webmozart\Assert\Assert;
@@ -24,10 +24,10 @@ use Webmozart\Assert\Assert;
 class CustomerWithoutKeyUpdater implements CustomerWithoutKeyUpdaterInterface
 {
     public function __construct(
-        protected CustomerPayloadBuilderInterface $customerPayloadBuilder,
-        protected ChannelContextInterface $channelContext,
-        protected UserApiInterface $userApi,
-        protected CookieManagerInterface $cookieManager,
+        protected readonly CustomerPayloadBuilderInterface $customerPayloadBuilder,
+        protected readonly UserApiInterface $userApi,
+        protected readonly CookieManagerInterface $cookieManager,
+        protected readonly UserComApiAwareResourceProviderInterface $userComApiAwareResourceProvider,
     ) {
     }
 
@@ -37,7 +37,10 @@ class CustomerWithoutKeyUpdater implements CustomerWithoutKeyUpdaterInterface
         ?AddressInterface $address = null,
         ?string $email = null,
     ): array|null {
-        $userApiAwareResource = $this->getApiAwareResource();
+        $userApiAwareResource = $this->userComApiAwareResourceProvider->getApiAwareResource();
+        if (null === $userApiAwareResource) {
+            return null;
+        }
 
         $email = $this->getEmail($customer, $email);
 
@@ -64,7 +67,7 @@ class CustomerWithoutKeyUpdater implements CustomerWithoutKeyUpdaterInterface
         if (false === is_array($user) || false === array_key_exists('id', $user)) {
             throw new \RuntimeException('User was not created or updated.');
         }
-        $this->sendEvent($user['email'], $eventName);
+        $this->sendEvent($userApiAwareResource, $user['email'], $eventName);
 
         return $user;
     }
@@ -77,20 +80,10 @@ class CustomerWithoutKeyUpdater implements CustomerWithoutKeyUpdaterInterface
         return $this->customerPayloadBuilder->build($email, $customer, $address);
     }
 
-    protected function getApiAwareResource(): UserComApiAwareInterface
-    {
-        $apiAwareResource = $this->channelContext->getChannel();
-        if (false === $apiAwareResource instanceof UserComApiAwareInterface) {
-            throw new \RuntimeException('Channel does not implement UserComApiAwareInterface.');
-        }
-
-        return $apiAwareResource;
-    }
-
-    protected function sendEvent(string $userCustomId, string $event = null): void
+    protected function sendEvent(UserComApiAwareInterface $resource, string $userCustomId, string $event): void
     {
         $this->userApi->createEventForUser(
-            $this->getApiAwareResource(),
+            $resource,
             $userCustomId,
             [
                 'name' => $event,
@@ -107,6 +100,6 @@ class CustomerWithoutKeyUpdater implements CustomerWithoutKeyUpdaterInterface
         $email = $email ?? $customer->getEmail();
         Assert::notNull($email, 'Could not find email in the customer or in the request.');
 
-        return $email;
+        return strtolower($email);
     }
 }

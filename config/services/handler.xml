@@ -13,6 +13,7 @@
             <argument type="service" id="bit_bag.sylius_user_com_plugin.api.deal_api"/>
             <argument type="service" id="bit_bag.sylius_user_com_plugin.api.product_api"/>
             <argument type="service" id="monolog.logger"/>
+            <argument type="service" id="bit_bag.sylius_user_com_plugin.provider.user_com_api_aware_resource_provider"/>
         </service>
     </services>
 </container>

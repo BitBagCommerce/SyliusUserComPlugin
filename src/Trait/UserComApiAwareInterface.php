@@ -19,5 +19,5 @@ interface UserComApiAwareInterface
 
     public function getUserComApiKey(): ?string;
 
-    public function setUserComApiKey(string $userComApiKey): void;
+    public function setUserComApiKey(?string $userComApiKey): void;
 }

@@ -44,7 +44,7 @@ final class CustomerProfileUpdatedSubscriber implements CustomerProfileUpdatedSu
                 $eventName,
                 $subject,
                 $subject->getDefaultAddress(),
-                $subject->getEmail(),
+                strtolower($subject->getEmail() ?? ''),
             );
 
             return;
@@ -59,7 +59,7 @@ final class CustomerProfileUpdatedSubscriber implements CustomerProfileUpdatedSu
                 $eventName,
                 $customer,
                 $subject->getShippingAddress(),
-                $customer?->getEmail(),
+                strtolower($customer?->getEmail() ?? ''),
             );
         }
     }

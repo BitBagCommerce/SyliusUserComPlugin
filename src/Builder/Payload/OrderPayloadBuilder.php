@@ -25,7 +25,7 @@ final class OrderPayloadBuilder implements OrderPayloadBuilderInterface
         $orderPayload = [
                 'custom_id' => $order->getNumber(),
                 'name' => sprintf('#%s', $order->getNumber()),
-                'user_custom_id' => $order->getCustomer()?->getEmail(),
+                'user_custom_id' => strtolower($order->getCustomer()?->getEmail() ?? ''),
                 'value' => (float) $order->getTotal() / 100,
                 'currency' => $order->getCurrencyCode(),
                 'stage' => $this->getStage($order),

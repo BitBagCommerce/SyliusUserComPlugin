@@ -32,7 +32,7 @@ trait UserComApiAwareTrait
         return $this->userComApiKey;
     }
 
-    public function setUserComApiKey(string $userComApiKey): void
+    public function setUserComApiKey(?string $userComApiKey): void
     {
         $this->userComApiKey = $userComApiKey;
     }
