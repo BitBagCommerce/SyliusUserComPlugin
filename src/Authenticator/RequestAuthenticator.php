@@ -37,8 +37,10 @@ final class RequestAuthenticator implements RequestAuthenticatorInterface
             return false;
         }
 
+        $content = $request->getContent(false);
+
         $content = json_encode(
-            json_decode($request->getContent(), true),
+            json_decode($content, true),
             \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE,
         );
 
