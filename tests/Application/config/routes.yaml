@@ -1,9 +1,9 @@
 bitbag_sylius_user_com_shop:
     resource: "@BitBagSyliusUserComPlugin/config/shop_routing.yml"
-    prefix: /{_locale}
+    prefix: /
     requirements:
         _locale: ^[a-z]{2}(?:_[A-Z]{2})?$
 
-acme_sylius_example_admin:
+bitbag_sylius_user_com_admin:
     resource: "@BitBagSyliusUserComPlugin/config/admin_routing.yml"
     prefix: /admin
