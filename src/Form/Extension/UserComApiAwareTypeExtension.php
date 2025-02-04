@@ -57,9 +57,9 @@ final class UserComApiAwareTypeExtension extends AbstractTypeExtension
                 $newPassword = $form->get(self::USER_COM_API_KEY_PROPERTY)->getData();
 
                 if (
-                    null !== $newPassword
-                    && is_string($newPassword)
-                    && $data instanceof UserComApiAwareInterface
+                    null !== $newPassword &&
+                    is_string($newPassword) &&
+                    $data instanceof UserComApiAwareInterface
                 ) {
                     $data->setUserComApiKey($newPassword);
                 }

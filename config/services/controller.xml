@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <defaults autowire="false" autoconfigure="false" public="true"/>
+        <service
+            id="bit_bag.sylius_user_com_plugin.controller.user_com_agreements_controller"
+            class="BitBag\SyliusUserComPlugin\Controller\UserComAgreementsController"
+            public="true"
+        >
+            <argument type="service" id="bit_bag.sylius_user_com_plugin.authenticator.request_authenticator"/>
+            <argument type="service" id="bit_bag.sylius_user_com_plugin.synchronizer.customer_agreements_synchronizer"/>
+            <argument type="service" id="bit_bag.sylius_user_com_plugin.validator.payload_validator"/>
+            <argument type="service" id="monolog.logger"/>
+        </service>
+    </services>
+</container>

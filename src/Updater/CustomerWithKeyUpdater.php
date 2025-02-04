@@ -56,7 +56,7 @@ class CustomerWithKeyUpdater extends CustomerWithoutKeyUpdater implements Custom
             UserApiInterface::USER_KEY_PROPERTY,
         );
 
-        if (null === $userFoundByKey) {
+        if (null === $userFoundByKey || array_key_exists(AbstractClient::ERROR, $userFoundByKey)) {
             return $this->updateWithoutUserKey(
                 $eventName,
                 $customer,
