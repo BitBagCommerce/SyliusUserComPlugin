@@ -36,7 +36,17 @@ final class UserComAgreementsController
             if (false === $this->requestAuthenticator->authenticate($request)) {
                 return new JsonResponse('Unauthorized', Response::HTTP_UNAUTHORIZED);
             }
-            $payload = json_decode($request->getContent(false), true);
+
+            $payload = $request->getContent(false);
+            if (is_resource($payload)) {
+                $payload = stream_get_contents($payload);
+            }
+
+            if (false === $payload) {
+                return new JsonResponse('Invalid JSON payload', Response::HTTP_BAD_REQUEST);
+            }
+
+            $payload = json_decode($payload, true);
 
             if (!is_array($payload) || [] === $payload) {
                 return new JsonResponse('Invalid JSON payload', Response::HTTP_BAD_REQUEST);

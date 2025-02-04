@@ -15,6 +15,7 @@ use BitBag\SyliusUserComPlugin\Trait\UserComApiAwareInterface;
 use Psr\Log\LoggerInterface;
 use Sylius\Component\Channel\Context\ChannelContextInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 final class RequestAuthenticator implements RequestAuthenticatorInterface
 {
@@ -38,6 +39,14 @@ final class RequestAuthenticator implements RequestAuthenticatorInterface
         }
 
         $content = $request->getContent(false);
+
+        if (is_resource($content)) {
+            $content = stream_get_contents($content);
+        }
+
+        if (false === $content) {
+            throw new \InvalidArgumentException('Invalid JSON payload', Response::HTTP_BAD_REQUEST);
+        }
 
         $content = json_encode(
             json_decode($content, true),
