@@ -10,8 +10,6 @@
    >       "type": "vcs",
    >      "url": "https://github.com/BitBagCommerce/SyliusUserComPlugin.git"
    >    },
-   >  { }
-   >
    > ],
    > ```
 2. Add required environment variables to your `.env` file:
