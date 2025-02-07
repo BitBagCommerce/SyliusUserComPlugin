@@ -6,6 +6,3 @@ spinbits_sylius_google_analytics4:
 
 parameters:
     locale: en_US
-
-imports:
-    - { resource: ./services/** }

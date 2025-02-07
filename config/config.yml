@@ -1,2 +1,14 @@
+spinbits_sylius_google_analytics4:
+    id: '%env(TAG_MANAGER_ID)%'
+
+parameters:
+    user_com.frontend_api_key: '%env(USER_COM_FRONTEND_API_KEY)%'
+
+twig:
+    globals:
+        user_com_frontend_api_key: '%user_com.frontend_api_key%'
+
 imports: 
     - { resource: "state_machine/*" }
+    - { resource: "events.yaml" }
+

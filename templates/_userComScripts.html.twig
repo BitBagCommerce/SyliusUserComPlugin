@@ -1,4 +1,5 @@
 {% set channel = sylius.channel %}
+
 {% if null != channel.userComApiKey and null != channel.userComUrl%}
     {% set customer = sylius.customer|default(null) %}
     {% set genderMap =  constant('BitBag\\SyliusUserComPlugin\\Builder\\Payload\\CustomerPayloadBuilderInterface::GENDER_MAP')%}

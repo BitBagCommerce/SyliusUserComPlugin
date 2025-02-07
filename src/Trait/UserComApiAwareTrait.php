@@ -11,10 +11,16 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusUserComPlugin\Trait;
 
+use Doctrine\ORM\Mapping as ORM;
+
 trait UserComApiAwareTrait
 {
+    #[ORM\Column(name: 'user_com_url', type: 'string', nullable: true)]
+    /** @ORM\Column(name="user_com_url", type="string", nullable=true) */
     private ?string $userComUrl;
 
+    #[ORM\Column(name: 'user_com_url', type: 'string', nullable: true)]
+    /** @ORM\Column(name="user_com_url", type="string", nullable=true) */
     private ?string $userComApiKey;
 
     public function getUserComUrl(): ?string
