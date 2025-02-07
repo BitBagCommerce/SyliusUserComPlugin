@@ -9,10 +9,17 @@
    >    {
    >       "type": "vcs",
    >      "url": "https://github.com/BitBagCommerce/SyliusUserComPlugin.git"
-   >    }
-   > ]
+   >    },
+   >  { }
+   >
+   > ],
    > ```
-2. Add plugin dependencies to config/bundles.php file:
+2. Add required environment variables to your `.env` file:
+    ```dotenv
+    USER_COM_FRONTEND_API_KEY=""
+    TAG_MANAGER_ID=""
+    ```
+3. Add plugin dependencies to config/bundles.php file:
     ```php
     return [
         ...
@@ -21,14 +28,14 @@
         ...
     ];
     ```
-3. Import required config in your `config/packages/_sylius.yaml` file:
+4. Import required config in your `config/packages/_sylius.yaml` file:
     ```yaml
     imports:
         ...
         - { resource: "@BitBagSyliusUserComPlugin/config/config.yml" }
         ...
     ```
-4. Extend `Channel` entity `UserComApiAwareTrait` and implement `UserComApiAwareInterface` 
+5. Extend `Channel` entity `UserComApiAwareTrait` and implement `UserComApiAwareInterface` 
     ```php
     class Channel extends BaseChannel implements ChannelInterface
     {
@@ -44,13 +51,7 @@
     >`UserComApiAwareTrait` contains mapping for annotations and for attributes which are required by UserCom integration.
     > If you're using xml mapping, you should add mapping for those properties in your `Channel.orm.xml` file.
 
-5. Add required environment variables to your `.env` file:
-    ```dotenv
-    USER_COM_FRONTEND_API_KEY=""
-    TAG_MANAGER_ID=""
-    ```
-
-6. *Optional* - take advantage of channel based configuration of Google Tag Manager ID:
+6. Take advantage of channel based configuration of GoogleAnalyticsPlugin by adding :
     ```yaml
     spinbits_sylius_google_analytics4:
         id: "%env(TAG_MANAGER_ID)%"

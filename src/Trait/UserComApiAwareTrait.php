@@ -19,8 +19,8 @@ trait UserComApiAwareTrait
     /** @ORM\Column(name="user_com_url", type="string", nullable=true) */
     private ?string $userComUrl;
 
-    #[ORM\Column(name: 'user_com_url', type: 'string', nullable: true)]
-    /** @ORM\Column(name="user_com_url", type="string", nullable=true) */
+    #[ORM\Column(name: 'user_com_api_key', type: 'string', nullable: true)]
+    /** @ORM\Column(name="user_com_api_key", type="string", nullable=true) */
     private ?string $userComApiKey;
 
     public function getUserComUrl(): ?string

@@ -1,6 +1,3 @@
-spinbits_sylius_google_analytics4:
-    id: '%env(TAG_MANAGER_ID)%'
-
 parameters:
     user_com.frontend_api_key: '%env(USER_COM_FRONTEND_API_KEY)%'
 
