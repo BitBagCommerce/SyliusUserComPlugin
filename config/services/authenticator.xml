@@ -5,7 +5,7 @@
         <defaults autowire="false" autoconfigure="false"/>
         <service id="bit_bag.sylius_user_com_plugin.authenticator.request_authenticator" class="BitBag\SyliusUserComPlugin\Authenticator\RequestAuthenticator">
             <argument type="service" id="sylius.context.channel.composite"/>
-            <argument type="service" id="monolog.logger"/>
+            <argument type="service" id="monolog.logger.user_com"/>
         </service>
     </services>
 </container>

@@ -17,6 +17,7 @@
             <argument type="service" id="bit_bag.sylius_user_com_plugin.manager.cookie_manager"/>
             <argument type="service" id="bit_bag.sylius_user_com_plugin.updater.customer_with_key_updater"/>
             <argument type="service" id="bit_bag.sylius_user_com_plugin.updater.customer_without_key_updater"/>
+            <argument type="service" id="monolog.logger.user_com"/>
         </service>
     </services>
 </container>

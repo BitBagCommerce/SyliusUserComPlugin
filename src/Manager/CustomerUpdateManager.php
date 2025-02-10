@@ -13,6 +13,7 @@ namespace BitBag\SyliusUserComPlugin\Manager;
 
 use BitBag\SyliusUserComPlugin\Updater\CustomerWithKeyUpdaterInterface;
 use BitBag\SyliusUserComPlugin\Updater\CustomerWithoutKeyUpdaterInterface;
+use Psr\Log\LoggerInterface;
 use Sylius\Component\Core\Model\AddressInterface;
 use Sylius\Component\Core\Model\CustomerInterface;
 
@@ -22,6 +23,7 @@ final class CustomerUpdateManager implements CustomerUpdateManagerInterface
         private readonly CookieManagerInterface $cookieManager,
         private readonly CustomerWithKeyUpdaterInterface $customerWithKeyUpdater,
         private readonly CustomerWithoutKeyUpdaterInterface $customerWithoutKeyUpdater,
+        private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -31,23 +33,31 @@ final class CustomerUpdateManager implements CustomerUpdateManagerInterface
         ?AddressInterface $address = null,
         ?string $email = null,
     ): array|null {
-        $userKey = $this->cookieManager->getUserComCookie();
+        try {
+            $userKey = $this->cookieManager->getUserComCookie();
 
-        if (null !== $userKey) {
-            return $this->customerWithKeyUpdater->updateWithUserKey(
+            if (null !== $userKey) {
+                return $this->customerWithKeyUpdater->updateWithUserKey(
+                    $eventName,
+                    $userKey,
+                    $customer,
+                    $address,
+                    $email,
+                );
+            }
+
+            return $this->customerWithoutKeyUpdater->updateWithoutUserKey(
                 $eventName,
-                $userKey,
                 $customer,
                 $address,
                 $email,
             );
-        }
+        } catch (\Throwable $exception) {
+            $this->logger->error('User.com - Customer request failed.', [
+                'exception' => $exception,
+            ]);
 
-        return $this->customerWithoutKeyUpdater->updateWithoutUserKey(
-            $eventName,
-            $customer,
-            $address,
-            $email,
-        );
+            return null;
+        }
     }
 }

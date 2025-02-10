@@ -86,28 +86,34 @@ final class OrderStateUpdateHandler implements OrderStateUpdateHandlerInterface
         UserComApiAwareInterface $resource,
         string $email,
     ): void {
-        $eventType = self::PRODUCT_EVENT_MAP[$order->getState()] ?? null;
-        if (null === $eventType) {
-            $this->logger->warning(sprintf('Order #%s state "%s" is not supported.', $order->getNumber(), $order->getState()));
+        try {
+            $eventType = self::PRODUCT_EVENT_MAP[$order->getState()] ?? null;
+            if (null === $eventType) {
+                $this->logger->warning(sprintf('Order #%s state "%s" is not supported.', $order->getNumber(), $order->getState()));
 
-            return;
-        }
-
-        foreach ($order->getItems() as $orderItem) {
-            $variant = $orderItem->getVariant();
-            if (null === $variant) {
-                $this->logger->warning(sprintf('Order item #%s does not have a variant.', $orderItem->getId()));
-
-                continue;
+                return;
             }
-            $product = $variant->getProduct();
 
-            $this->productApi->createProductEventByCustomId(
-                $resource,
-                $variant->getId(),
-                $this->productEventPayloadBuilder->build($eventType, $variant, $email),
-                sprintf('%s - %s', $product?->getName(), $variant->getName()),
-            );
+            foreach ($order->getItems() as $orderItem) {
+                $variant = $orderItem->getVariant();
+                if (null === $variant) {
+                    $this->logger->warning(sprintf('Order item #%s does not have a variant.', $orderItem->getId()));
+
+                    continue;
+                }
+                $product = $variant->getProduct();
+
+                $this->productApi->createProductEventByCustomId(
+                    $resource,
+                    $variant->getId(),
+                    $this->productEventPayloadBuilder->build($eventType, $variant, $email),
+                    sprintf('%s - %s', $product?->getName(), $variant->getName()),
+                );
+            }
+        } catch (\Throwable $exception) {
+            $this->logger->error('User.com - Product event request failed.', [
+                'exception' => $exception,
+            ]);
         }
     }
 }
