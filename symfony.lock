@@ -202,6 +202,9 @@
             "ref": "9c8a1e8ce2b1f215015ed16652c4ed18eb5867fd"
         }
     },
+    "spinbits/google-analytics-4-plugin": {
+        "version": "dev-test/bump-sylius-version"
+    },
     "squizlabs/php_codesniffer": {
         "version": "3.7",
         "recipe": {
