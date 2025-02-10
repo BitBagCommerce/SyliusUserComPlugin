@@ -30,27 +30,33 @@ final class PayloadValidator implements PayloadValidatorInterface
 
         if (!isset($extra[self::EMAIL])) {
             $errors[] = 'Email is required.';
+        } else {
+            $email = $extra[self::EMAIL];
+
+            if (!is_string($email) || false === filter_var($email, \FILTER_VALIDATE_EMAIL)) {
+                $errors[] = 'Email is not valid.';
+            }
         }
 
-        $email = $extra[self::EMAIL];
+        if (!isset($extra[self::AGREEMENTS])) {
+            $errors[] = 'Agreements are required.';
 
-        if (!is_string($email) || false === filter_var($email, \FILTER_VALIDATE_EMAIL)) {
-            $errors[] = 'Email is not valid.';
+            return $errors;
         }
 
         if (false === is_array($extra[self::AGREEMENTS]) ||
             [] === $extra[self::AGREEMENTS]
         ) {
             $errors[] = 'Agreements are required.';
-        }
+        } else {
+            foreach ($extra[self::AGREEMENTS] as $agreement => $value) {
+                if (!is_string($agreement)) {
+                    $errors[] = 'Agreement code is required and must be a string.';
+                }
 
-        foreach ($extra[self::AGREEMENTS] as $agreement => $value) {
-            if (!isset($agreement) || !is_string($agreement)) {
-                $errors[] = 'Agreement code is required and must be a string.';
-            }
-
-            if (false === is_bool($value)) {
-                $errors[] = 'Agreement value is required and must be a boolean.';
+                if (false === is_bool($value)) {
+                    $errors[] = 'Agreement value is required and must be a boolean.';
+                }
             }
         }
 
