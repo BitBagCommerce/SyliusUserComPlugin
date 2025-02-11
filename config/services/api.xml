@@ -5,18 +5,18 @@
         <defaults autowire="false" autoconfigure="false"/>
         <service id="bit_bag.sylius_user_com_plugin.api.user_api" class="BitBag\SyliusUserComPlugin\Api\UserApi">
             <argument type="service" id="http_client"/>
-            <argument type="service" id="monolog.logger"/>
+            <argument type="service" id="monolog.logger.user_com"/>
         </service>
 
         <service id="bit_bag.sylius_user_com_plugin.api.deal_api" class="BitBag\SyliusUserComPlugin\Api\DealApi">
             <argument type="service" id="http_client"/>
-            <argument type="service" id="monolog.logger"/>
+            <argument type="service" id="monolog.logger.user_com"/>
             <argument type="service" id="bit_bag.sylius_user_com_plugin.api.user_api"/>
         </service>
 
         <service id="bit_bag.sylius_user_com_plugin.api.product_api" class="BitBag\SyliusUserComPlugin\Api\ProductApi">
             <argument type="service" id="http_client"/>
-            <argument type="service" id="monolog.logger"/>
+            <argument type="service" id="monolog.logger.user_com"/>
         </service>
     </services>
 </container>

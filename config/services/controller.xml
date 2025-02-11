@@ -11,7 +11,7 @@
             <argument type="service" id="bit_bag.sylius_user_com_plugin.authenticator.request_authenticator"/>
             <argument type="service" id="bit_bag.sylius_user_com_plugin.synchronizer.customer_agreements_synchronizer"/>
             <argument type="service" id="bit_bag.sylius_user_com_plugin.validator.payload_validator"/>
-            <argument type="service" id="monolog.logger"/>
+            <argument type="service" id="monolog.logger.user_com"/>
         </service>
     </services>
 </container>

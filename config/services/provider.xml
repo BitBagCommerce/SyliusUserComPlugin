@@ -9,7 +9,7 @@
         >
             <argument type="service" id="sylius.repository.channel"/>
             <argument type="service" id="sylius.context.channel.composite"/>
-            <argument type="service" id="monolog.logger"/>
+            <argument type="service" id="monolog.logger.user_com"/>
         </service>
     </services>
 </container>

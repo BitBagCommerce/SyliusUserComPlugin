@@ -1,9 +1,15 @@
 monolog:
+    channels: ["user_com"]
     handlers:
         main:
             type: stream
             path: "%kernel.logs_dir%/%kernel.environment%.log"
             level: debug
+        user_com:
+            type: stream
+            path: "%kernel.logs_dir%/%kernel.environment%.user_com.log"
+            level: debug
+            channels: ["user_com"]
         firephp:
             type: firephp
             level: info

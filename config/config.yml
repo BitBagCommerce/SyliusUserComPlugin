@@ -8,4 +8,5 @@ twig:
 imports: 
     - { resource: "state_machine/*" }
     - { resource: "events.yaml" }
+    - { resource: "monolog.yaml" }
 
