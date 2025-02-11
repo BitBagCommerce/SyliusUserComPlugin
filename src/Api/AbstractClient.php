@@ -44,6 +44,7 @@ abstract class AbstractClient
             );
 
             $status = $response->getStatusCode();
+
             if ($status === Response::HTTP_TOO_MANY_REQUESTS && !$retrial) {
                 sleep(1);
 
@@ -51,6 +52,15 @@ abstract class AbstractClient
             }
 
             if ($status >= Response::HTTP_OK && $status < Response::HTTP_MULTIPLE_CHOICES) {
+                $this->logger->debug(sprintf(
+                    sprintf('%s User.com API request', $status),
+                ), [
+                    'path' => $path,
+                    'method' => $method,
+                    'options' => $options,
+                    'response' => $response->getContent(false),
+                ]);
+
                 return $response->toArray();
             }
 

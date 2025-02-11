@@ -19,6 +19,8 @@ use BitBag\SyliusUserComPlugin\Provider\UserComApiAwareResourceProviderInterface
 use BitBag\SyliusUserComPlugin\Trait\UserComApiAwareInterface;
 use Psr\Log\LoggerInterface;
 use Sylius\Component\Core\Model\OrderInterface;
+use Sylius\Component\Product\Model\ProductInterface;
+use Sylius\Component\Product\Model\ProductVariantInterface;
 use Webmozart\Assert\Assert;
 
 final class OrderStateUpdateHandler implements OrderStateUpdateHandlerInterface
@@ -107,7 +109,7 @@ final class OrderStateUpdateHandler implements OrderStateUpdateHandlerInterface
                     $resource,
                     $variant->getId(),
                     $this->productEventPayloadBuilder->build($eventType, $variant, $email),
-                    sprintf('%s - %s', $product?->getName(), $variant->getName()),
+                    $this->getProductName($variant, $product),
                 );
             }
         } catch (\Throwable $exception) {
@@ -115,5 +117,23 @@ final class OrderStateUpdateHandler implements OrderStateUpdateHandlerInterface
                 'exception' => $exception,
             ]);
         }
+    }
+
+    public function getProductName(
+        ProductVariantInterface $variant,
+        ?ProductInterface $product,
+    ): string {
+        $productName = $product?->getName();
+        $variantName = $variant->getName();
+
+        if (null === $productName) {
+            return $variantName ?? 'Unknown product';
+        }
+
+        if (null === $variantName) {
+            return $productName;
+        }
+
+        return sprintf('%s - %s', $productName, $variantName);
     }
 }

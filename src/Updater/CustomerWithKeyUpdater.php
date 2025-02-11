@@ -103,21 +103,14 @@ class CustomerWithKeyUpdater extends CustomerWithoutKeyUpdater implements Custom
             );
 
             $this->userApi->mergeUsers($apiAwareResource, $userByEmailFromForm['id'], [$userFoundByKey['id']]);
+
+            $this->changeCookieWithEvent($user, $apiAwareResource, $eventName);
+
+            return $user;
         }
 
-        if (!isset($user) || false === array_key_exists(AbstractClient::ERROR, $user)) {
-            $user = $this->userApi->createUser($apiAwareResource, $payload);
-        }
-
-        if (false === is_array($user) ||
-            false === array_key_exists('id', $user) ||
-            false === array_key_exists('user_key', $user)
-        ) {
-            throw new \RuntimeException('User might not be created or updated properly.');
-        }
-
-        $this->cookieManager->setUserComCookie($user['user_key']);
-        $this->sendEvent($apiAwareResource, $user['email'], $eventName);
+        $user = $this->userApi->createUser($apiAwareResource, $payload);
+        $this->changeCookieWithEvent($user, $apiAwareResource, $eventName);
 
         return $user;
     }
@@ -136,9 +129,12 @@ class CustomerWithKeyUpdater extends CustomerWithoutKeyUpdater implements Custom
             UserApiInterface::EMAIL_PROPERTY,
         );
 
-        $id = null !== $customerFoundByEmail ?
-            $customerFoundByEmail['id'] :
-            $userFromUserKey['id'];
+        $customerFoundByEmailId = null !== $customerFoundByEmail && isset($customerFoundByEmail['id'])
+            ? $customerFoundByEmail['id']
+            : null
+        ;
+
+        $id = $customerFoundByEmailId ?? $userFromUserKey['id'];
 
         $user = $this->userApi->updateUser(
             $apiAwareResource,
@@ -146,12 +142,31 @@ class CustomerWithKeyUpdater extends CustomerWithoutKeyUpdater implements Custom
             $this->buildPayload($email, $customer, $address),
         );
 
-        if (null !== $customerFoundByEmail) {
-            $this->userApi->mergeUsers($apiAwareResource, $id, [$userFromUserKey]);
+        if (is_array($customerFoundByEmail) &&
+            array_key_exists('id', $customerFoundByEmail) &&
+            array_key_exists('id', $userFromUserKey)
+        ) {
+            $this->userApi->mergeUsers($apiAwareResource, $customerFoundByEmail['id'], [$userFromUserKey['id']]);
         }
 
         $this->sendEvent($apiAwareResource, $email, $eventName);
 
         return $user;
+    }
+
+    public function changeCookieWithEvent(
+        ?array $user,
+        UserComApiAwareInterface $apiAwareResource,
+        string $eventName,
+    ): void {
+        if (false === is_array($user) ||
+            false === array_key_exists('id', $user) ||
+            false === array_key_exists('user_key', $user)
+        ) {
+            throw new \RuntimeException('User might not be created or updated properly.');
+        }
+
+        $this->cookieManager->setUserComCookie($user['user_key']);
+        $this->sendEvent($apiAwareResource, $user['email'], $eventName);
     }
 }
