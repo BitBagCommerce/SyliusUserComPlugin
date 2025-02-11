@@ -44,14 +44,16 @@ abstract class AbstractClient
             );
 
             $status = $response->getStatusCode();
+
             if ($status === Response::HTTP_TOO_MANY_REQUESTS && !$retrial) {
                 sleep(1);
 
                 return $this->request($path, $method, $options, true);
             }
+
             if ($status >= Response::HTTP_OK && $status < Response::HTTP_MULTIPLE_CHOICES) {
                 $this->logger->debug(sprintf(
-                    '200 User.com API request',
+                    sprintf('%s User.com API request', $status),
                 ), [
                     'path' => $path,
                     'method' => $method,
