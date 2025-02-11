@@ -49,8 +49,16 @@ abstract class AbstractClient
 
                 return $this->request($path, $method, $options, true);
             }
-
             if ($status >= Response::HTTP_OK && $status < Response::HTTP_MULTIPLE_CHOICES) {
+                $this->logger->debug(sprintf(
+                    '200 User.com API request',
+                ), [
+                    'path' => $path,
+                    'method' => $method,
+                    'options' => $options,
+                    'response' => $response->getContent(false),
+                ]);
+
                 return $response->toArray();
             }
 
