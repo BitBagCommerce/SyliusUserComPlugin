@@ -92,6 +92,7 @@ class CustomerWithKeyUpdater extends CustomerWithoutKeyUpdater implements Custom
             $email,
             UserApiInterface::EMAIL_PROPERTY,
         );
+
         if (null !== $userByEmailFromForm &&
             false === array_key_exists(AbstractClient::ERROR, $userByEmailFromForm)
         ) {
@@ -108,10 +109,7 @@ class CustomerWithKeyUpdater extends CustomerWithoutKeyUpdater implements Custom
             return $user;
         }
 
-        if (!isset($user) || false === array_key_exists(AbstractClient::ERROR, $user)) {
-            $user = $this->userApi->createUser($apiAwareResource, $payload);
-        }
-
+        $user = $this->userApi->createUser($apiAwareResource, $payload);
         $this->changeCookieWithEvent($user, $apiAwareResource, $eventName);
 
         return $user;
@@ -159,7 +157,7 @@ class CustomerWithKeyUpdater extends CustomerWithoutKeyUpdater implements Custom
     public function changeCookieWithEvent(
         ?array $user,
         UserComApiAwareInterface $apiAwareResource,
-        string $eventName
+        string $eventName,
     ): void {
         if (false === is_array($user) ||
             false === array_key_exists('id', $user) ||
