@@ -55,10 +55,13 @@ final class CustomerProfileUpdatedSubscriber implements CustomerProfileUpdatedSu
             if (null !== $customer && !$customer instanceof CustomerInterface) {
                 throw new \RuntimeException('Customer is not set or is not an instance of CustomerInterface');
             }
+
+            $address = $customer?->getDefaultAddress() ?? $subject->getBillingAddress();
+
             $this->customerUpdateManager->manageChange(
                 $eventName,
                 $customer,
-                $subject->getShippingAddress(),
+                $address,
                 strtolower($customer?->getEmail() ?? ''),
             );
         }

@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusUserComPlugin\Api;
 
+use BitBag\SyliusUserComPlugin\Manager\UserComApiTokenManagerInterface;
 use BitBag\SyliusUserComPlugin\Trait\UserComApiAwareInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,9 +22,10 @@ final class DealApi extends AbstractClient implements DealApiInterface
     public function __construct(
         HttpClientInterface $client,
         LoggerInterface $logger,
+        UserComApiTokenManagerInterface $apiTokenManager,
         private readonly UserApiInterface $userApi,
     ) {
-        parent::__construct($client, $logger);
+        parent::__construct($client, $logger, $apiTokenManager);
     }
 
     public function updateDealByCustomId(UserComApiAwareInterface $resource, string $customId, array $data): ?array

@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusUserComPlugin\Api;
 
+use BitBag\SyliusUserComPlugin\Manager\UserComApiTokenManagerInterface;
 use BitBag\SyliusUserComPlugin\Trait\UserComApiAwareInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,6 +27,7 @@ abstract class AbstractClient
     public function __construct(
         private readonly HttpClientInterface $client,
         private readonly LoggerInterface $logger,
+        private readonly UserComApiTokenManagerInterface $apiTokenManager,
     ) {
     }
 
@@ -131,9 +133,8 @@ abstract class AbstractClient
             throw new \InvalidArgumentException('User.com API key is missing.');
         }
 
-        return sprintf(
-            'Token %s',
-            $resource->getUserComApiKey(),
-        );
+        $decryptedToken = $this->apiTokenManager->decrypt($resource->getUserComApiKey());
+
+        return sprintf('Token %s', $decryptedToken, );
     }
 }
