@@ -1,5 +1,7 @@
 parameters:
     user_com.frontend_api_key: '%env(USER_COM_FRONTEND_API_KEY)%'
+    user_com.encryption_key: '%env(USER_COM_ENCRYPTION_KEY)%'
+    user_com.encryption_iv: '%env(USER_COM_ENCRYPTION_IV)%'
 
 twig:
     globals:
@@ -9,4 +11,6 @@ imports:
     - { resource: "state_machine/*" }
     - { resource: "events.yaml" }
     - { resource: "monolog.yaml" }
+    - { resource: "packages/*" }
 
+    - { resource: "@SetonoSyliusFeedPlugin/Resources/config/app/config.yaml" }

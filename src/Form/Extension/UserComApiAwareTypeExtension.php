@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusUserComPlugin\Form\Extension;
 
+use BitBag\SyliusUserComPlugin\Manager\UserComApiTokenManagerInterface;
 use BitBag\SyliusUserComPlugin\Trait\UserComApiAwareInterface;
 use Sylius\Bundle\ChannelBundle\Form\Type\ChannelType;
 use Symfony\Component\Form\AbstractTypeExtension;
@@ -24,6 +25,11 @@ use Symfony\Component\Validator\Constraints\Url;
 
 final class UserComApiAwareTypeExtension extends AbstractTypeExtension
 {
+    public function __construct(
+        private readonly UserComApiTokenManagerInterface $apiTokenManager,
+    ) {
+    }
+
     private const USER_COM_API_KEY_PROPERTY = 'userComApiKey';
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -54,14 +60,15 @@ final class UserComApiAwareTypeExtension extends AbstractTypeExtension
                 $data = $event->getData();
                 $form = $event->getForm();
 
-                $newPassword = $form->get(self::USER_COM_API_KEY_PROPERTY)->getData();
+                $apiToken = $form->get(self::USER_COM_API_KEY_PROPERTY)->getData();
 
                 if (
-                    null !== $newPassword &&
-                    is_string($newPassword) &&
+                    null !== $apiToken &&
+                    is_string($apiToken) &&
                     $data instanceof UserComApiAwareInterface
                 ) {
-                    $data->setUserComApiKey($newPassword);
+                    $encryptedToken = $this->apiTokenManager->encrypt($apiToken);
+                    $data->setUserComApiKey($encryptedToken);
                 }
             });
     }

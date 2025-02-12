@@ -12,19 +12,10 @@ declare(strict_types=1);
 namespace BitBag\SyliusUserComPlugin\Api;
 
 use BitBag\SyliusUserComPlugin\Trait\UserComApiAwareInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class ProductApi extends AbstractClient implements ProductApiInterface
 {
-    public function __construct(
-        HttpClientInterface $client,
-        LoggerInterface $logger,
-    ) {
-        parent::__construct($client, $logger);
-    }
-
     public function createProductEventByCustomId(
         UserComApiAwareInterface $resource,
         int $productId,

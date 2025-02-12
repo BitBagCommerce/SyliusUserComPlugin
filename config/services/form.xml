@@ -11,7 +11,7 @@
         </service>
 
         <service id="bit_bag.sylius_user_com_plugin.form.extension.user_com_api_aware_type_extension" class="BitBag\SyliusUserComPlugin\Form\Extension\UserComApiAwareTypeExtension">
-            <argument type="service" id="bit_bag.sylius_user_com_plugin.provider.user_com_api_aware_resource_provider"/>
+            <argument type="service" id="bit_bag.sylius_user_com_plugin.manager.user_com_api_token_manager"/>
             <tag name="form.type_extension" extended-type="Sylius\Bundle\ChannelBundle\Form\Type\ChannelType" priority="200" />
         </service>
     </services>

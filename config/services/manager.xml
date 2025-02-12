@@ -19,5 +19,13 @@
             <argument type="service" id="bit_bag.sylius_user_com_plugin.updater.customer_without_key_updater"/>
             <argument type="service" id="monolog.logger.user_com"/>
         </service>
+
+        <service
+            id="bit_bag.sylius_user_com_plugin.manager.user_com_api_token_manager"
+            class="BitBag\SyliusUserComPlugin\Manager\UserComApiTokenManager"
+        >
+            <argument type="string">%user_com.encryption_key%</argument>
+            <argument type="string">%user_com.encryption_iv%</argument>
+        </service>
     </services>
 </container>
