@@ -9,6 +9,7 @@
         TAG_MANAGER_ID=""
         USER_COM_ENCRYPTION_KEY=your-32-character-long-key
         USER_COM_ENCRYPTION_IV=your-16-character-long-iv
+        MESSENGER_USER_COM_ASYNCHRONOUS=""
     ```
 3. Add plugin dependencies to `config/bundles.php` file. Make sure that none of the bundles are duplicated.
     ```php
