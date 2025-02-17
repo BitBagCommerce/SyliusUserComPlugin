@@ -26,7 +26,6 @@
 {% endif %}
 
 <!-- Google tag (gtag.js), plugin provided by Spinbits -->
-{% dump %}
 <script async src="https://www.googletagmanager.com/gtag/js?id={{ id }}{{ url_suffix|raw }}"></script>
 <script>
     window.dataLayer = window.dataLayer || [];
@@ -41,12 +40,11 @@
         });
     }
     {% if app.session is not null and app.session.started %}
-    {% set events = app.session.bag('spinbits_ga4_events').all %}
-    {% for event, content in events %}
-    {% for c in content %}
-    gtag("event", "{{ event }}", {{ c|raw }});
-    {% endfor %}
-    {% endfor %}
-    console.log({{ events|json_encode|raw }})
+        {% set events = app.session.bag('spinbits_ga4_events').all %}
+        {% for event, content in events %}
+            {% for c in content %}
+                gtag("event", "{{ event }}", {{ c|raw }});
+            {% endfor %}
+        {% endfor %}
     {% endif %}
 </script>
