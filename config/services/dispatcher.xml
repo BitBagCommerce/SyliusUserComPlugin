@@ -9,6 +9,7 @@
             public="true"
         >
             <argument type="service" id="messenger.default_bus"/>
+            <argument type="service" id="monolog.logger.user_com"/>
         </service>
 
         <service
