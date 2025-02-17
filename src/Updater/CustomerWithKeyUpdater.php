@@ -39,14 +39,11 @@ class CustomerWithKeyUpdater extends CustomerWithoutKeyUpdater implements Custom
     public function updateWithUserKey(
         string $eventName,
         string $userKey,
+        UserComApiAwareInterface $apiAwareResource,
         ?CustomerInterface $customer = null,
         ?AddressInterface $address = null,
         ?string $email = null,
     ): array|null {
-        $apiAwareResource = $this->userComApiAwareResourceProvider->getApiAwareResource();
-        if (null === $apiAwareResource) {
-            return null;
-        }
         $email = $this->getEmail($customer, $email);
         $payload = $this->buildPayload($email, $customer, $address);
 
@@ -59,6 +56,7 @@ class CustomerWithKeyUpdater extends CustomerWithoutKeyUpdater implements Custom
         if (null === $userFoundByKey || array_key_exists(AbstractClient::ERROR, $userFoundByKey)) {
             return $this->updateWithoutUserKey(
                 $eventName,
+                $apiAwareResource,
                 $customer,
                 $address,
                 $email,

@@ -11,64 +11,91 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusUserComPlugin\EventSubscriber;
 
-use BitBag\SyliusUserComPlugin\Manager\CustomerUpdateManagerInterface;
+use BitBag\SyliusUserComPlugin\Dispatcher\CustomerMessageDispatcherInterface;
+use BitBag\SyliusUserComPlugin\Manager\CookieManagerInterface;
+use BitBag\SyliusUserComPlugin\Provider\UserComApiAwareResourceProviderInterface;
+use BitBag\SyliusUserComPlugin\Trait\UserComApiAwareInterface;
+use Psr\Log\LoggerInterface;
+use Sylius\Bundle\ResourceBundle\Event\ResourceControllerEvent;
 use Sylius\Component\Core\Model\CustomerInterface;
 use Sylius\Component\Core\Model\OrderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
-final class CustomerProfileUpdatedSubscriber implements CustomerProfileUpdatedSubscriberInterface
+final class CustomerProfileUpdatedSubscriber implements CustomerProfileUpdatedSubscriberInterface, EventSubscriberInterface
 {
-    private const EVENTS = [
-        FormEvents::POST_SUBMIT => 'postCustomerProfileUpdated',
-    ];
-
     public function __construct(
-        private readonly CustomerUpdateManagerInterface $customerUpdateManager,
+        private readonly CustomerMessageDispatcherInterface $customerMessageDispatcher,
+        private readonly UserComApiAwareResourceProviderInterface $userComApiAwareResourceProvider,
+        private readonly CookieManagerInterface $cookieManager,
+        private readonly RequestStack $requestStack,
+        private readonly LoggerInterface $logger,
     ) {
     }
 
-    public function postCustomerProfileUpdated(FormEvent $event): void
+    public function dispatch(ResourceControllerEvent $event): void
     {
-        $formName = $event->getForm()->getName();
+        $customer = $event->getSubject();
+        if ($customer instanceof OrderInterface) {
+            $customer = $customer->getCustomer();
+        }
 
-        $eventName = array_key_exists($formName, self::FORM_NAME_TO_EVENT_MAP)
-            ? self::FORM_NAME_TO_EVENT_MAP[$formName]
-            : self::DEFAULT_EVENT
-        ;
-
-        $subject = $event->getData();
-
-        if ($subject instanceof CustomerInterface) {
-            $this->customerUpdateManager->manageChange(
-                $eventName,
-                $subject,
-                $subject->getDefaultAddress(),
-                strtolower($subject->getEmail() ?? ''),
+        if (!$customer instanceof CustomerInterface) {
+            $this->logger->critical(
+                'User.com - Subject of the event is not an instance of CustomerInterface.',
             );
 
             return;
         }
 
-        if ($subject instanceof OrderInterface) {
-            $customer = $subject->getCustomer();
-            if (null !== $customer && !$customer instanceof CustomerInterface) {
-                throw new \RuntimeException('Customer is not set or is not an instance of CustomerInterface');
-            }
+        $cookie = $this->cookieManager->getUserComCookie();
+        $eventName = $this->resolveEventName();
 
-            $address = $customer?->getDefaultAddress() ?? $subject->getBillingAddress();
-
-            $this->customerUpdateManager->manageChange(
-                $eventName,
-                $customer,
-                $address,
-                strtolower($customer?->getEmail() ?? ''),
+        $resource = $this->userComApiAwareResourceProvider->getApiAwareResource();
+        if (!$resource instanceof UserComApiAwareInterface || null === $resource->getId()) {
+            $this->logger->critical(
+                'User.com - Couldn\'t find resource for customer update or missing identifier.',
             );
+
+            return;
         }
+
+        $this->customerMessageDispatcher->dispatch(
+            $eventName,
+            $resource,
+            $cookie,
+            $customer,
+            $customer->getDefaultAddress(),
+            strtolower($customer->getEmail() ?? ''),
+        );
     }
 
-    public static function getSubscribedEvents(): array
+    private function resolveEventName(): string
     {
-        return self::EVENTS;
+        $request = $this->requestStack->getCurrentRequest();
+        if (null === $request) {
+            return self::DEFAULT_EVENT;
+        }
+
+        $route = $request->attributes->get('_route');
+        if (null === $route) {
+            return self::DEFAULT_EVENT;
+        }
+
+        return
+            is_string($route) &&
+            array_key_exists($route, self::ROUTE_TO_EVENT_MAP)
+            ? self::ROUTE_TO_EVENT_MAP[$route]
+            : self::DEFAULT_EVENT
+        ;
+    }
+
+    public static function getSubscribedEvents()
+    {
+        return [
+            'sylius.customer.post_register' => 'dispatch',
+            'sylius.customer.post_update' => 'dispatch',
+            'sylius.order.post_address' => 'dispatch',
+        ];
     }
 }

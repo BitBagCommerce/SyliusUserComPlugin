@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusUserComPlugin\Updater;
 
+use BitBag\SyliusUserComPlugin\Trait\UserComApiAwareInterface;
 use Sylius\Component\Core\Model\AddressInterface;
 use Sylius\Component\Core\Model\CustomerInterface;
 
@@ -19,6 +20,7 @@ interface CustomerWithKeyUpdaterInterface
     public function updateWithUserKey(
         string $eventName,
         string $userKey,
+        UserComApiAwareInterface $apiAwareResource,
         ?CustomerInterface $customer = null,
         ?AddressInterface $address = null,
         ?string $email = null,

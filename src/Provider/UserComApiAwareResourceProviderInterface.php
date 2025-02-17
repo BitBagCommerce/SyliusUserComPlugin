@@ -21,4 +21,6 @@ interface UserComApiAwareResourceProviderInterface
     public function getApiAwareResourceByOrder(OrderInterface $order): ?UserComApiAwareInterface;
 
     public function getApiAwareResourceByFormData(string $code): ?UserComApiAwareInterface;
+
+    public function getApiAwareResourceById(mixed $id): ?UserComApiAwareInterface;
 }

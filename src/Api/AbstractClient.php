@@ -15,6 +15,7 @@ use BitBag\SyliusUserComPlugin\Manager\UserComApiTokenManagerInterface;
 use BitBag\SyliusUserComPlugin\Trait\UserComApiAwareInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\Exception\RecoverableMessageHandlingException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 
@@ -66,6 +67,16 @@ abstract class AbstractClient
                 return $response->toArray();
             }
 
+            if ($status > 499 && $status < 600) {
+                throw new RecoverableMessageHandlingException(
+                    sprintf(
+                        'Response status code : %s, response : %s',
+                        $status,
+                        $response->getContent(false),
+                    ),
+                );
+            }
+
             throw new \Exception(
                 sprintf(
                     'Response status code : %s, response : %s',
@@ -82,6 +93,10 @@ abstract class AbstractClient
                 'method' => $method,
                 'options' => $options,
             ]);
+
+            if ($e instanceof RecoverableMessageHandlingException) {
+                throw $e;
+            }
 
             if (isset($response) &&
                 $response->getStatusCode() === Response::HTTP_NOT_FOUND
