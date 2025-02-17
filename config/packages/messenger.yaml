@@ -5,7 +5,7 @@ framework:
                 dsn: "%env(MESSENGER_USER_COM_ASYNCHRONOUS)%"
                 retry_strategy:
                     max_retries: 5
-                    delay: 60000
+                    delay: 300000
                     multiplier: 2
         routing:
             BitBag\SyliusUserComPlugin\Message\OrderSynchronization: user_com_asynchronous
