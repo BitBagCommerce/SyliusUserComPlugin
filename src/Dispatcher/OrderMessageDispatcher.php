@@ -20,7 +20,7 @@ final class OrderMessageDispatcher implements OrderMessageDispatcherInterface
 {
     public function __construct(
         private readonly MessageBusInterface $messageBus,
-        private readonly LoggerInterface $logger
+        private readonly LoggerInterface $logger,
     ) {
     }
 

@@ -14,7 +14,6 @@ namespace BitBag\SyliusUserComPlugin\Manager;
 use BitBag\SyliusUserComPlugin\Trait\UserComApiAwareInterface;
 use BitBag\SyliusUserComPlugin\Updater\CustomerWithKeyUpdaterInterface;
 use BitBag\SyliusUserComPlugin\Updater\CustomerWithoutKeyUpdaterInterface;
-use Psr\Log\LoggerInterface;
 use Sylius\Component\Core\Model\AddressInterface;
 use Sylius\Component\Core\Model\CustomerInterface;
 
@@ -23,7 +22,6 @@ final class CustomerUpdateManager implements CustomerUpdateManagerInterface
     public function __construct(
         private readonly CustomerWithKeyUpdaterInterface $customerWithKeyUpdater,
         private readonly CustomerWithoutKeyUpdaterInterface $customerWithoutKeyUpdater,
-        private readonly LoggerInterface $logger,
     ) {
     }
 
