@@ -24,3 +24,8 @@ sylius_channel:
         channel:
             classes:
                 model: Tests\BitBag\SyliusUserComPlugin\Entity\Channel
+
+spinbits_sylius_google_analytics4:
+    id: "%env(TAG_MANAGER_ID)%"
+    templateName: "@BitBagSyliusUserComPlugin/_userComScripts.html.twig"
+    enabled: true

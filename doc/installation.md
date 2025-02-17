@@ -55,5 +55,10 @@
 6. Take advantage of channel based configuration of GoogleAnalyticsPlugin by adding :
     ```yaml
     spinbits_sylius_google_analytics4:
-        id: "%env(TAG_MANAGER_ID)%"
+      id: "%env(TAG_MANAGER_ID)%"
+      templateName: "@BitBagSyliusUserComPlugin/_userComScripts.html.twig"
+      enabled: true
     ```
+7. Add api credentials to your channel configuration in admin panel. If you decided to extend different object, please make sure that api credentials are set
+
+8. While integrating with User.com via GTM, you can use `user_com_customer_info` in browser console to check currently logged in customer data.
