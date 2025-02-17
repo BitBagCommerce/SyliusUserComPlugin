@@ -61,5 +61,8 @@
       enabled: true
     ```
 7. Add api credentials to your channel configuration in admin panel. If you decided to extend different object, please make sure that api credentials are set
-
+8. Configure consumer to run in supervisor or crontab:
+```bash
+   bin/console messenger:consume user_com_asynchronous
+```
 8. While integrating with User.com via GTM, you can use `user_com_customer_info` in browser console to check currently logged in customer data.

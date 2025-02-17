@@ -35,31 +35,23 @@ final class CustomerUpdateManager implements CustomerUpdateManagerInterface
         ?string $email = null,
         ?string $userKey = null,
     ): array|null {
-        try {
-            if (null !== $userKey) {
-                return $this->customerWithKeyUpdater->updateWithUserKey(
-                    $eventName,
-                    $userKey,
-                    $apiAwareResource,
-                    $customer,
-                    $address,
-                    $email,
-                );
-            }
-
-            return $this->customerWithoutKeyUpdater->updateWithoutUserKey(
+        if (null !== $userKey) {
+            return $this->customerWithKeyUpdater->updateWithUserKey(
                 $eventName,
+                $userKey,
                 $apiAwareResource,
                 $customer,
                 $address,
                 $email,
             );
-        } catch (\Throwable $exception) {
-            $this->logger->error('User.com - Customer request failed.', [
-                'exception' => $exception,
-            ]);
-
-            return null;
         }
+
+        return $this->customerWithoutKeyUpdater->updateWithoutUserKey(
+            $eventName,
+            $apiAwareResource,
+            $customer,
+            $address,
+            $email,
+        );
     }
 }
