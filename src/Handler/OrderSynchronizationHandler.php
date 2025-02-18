@@ -33,25 +33,17 @@ final class OrderSynchronizationHandler implements MessageHandlerInterface
 
     public function __invoke(OrderSynchronization $orderSynchronization): void
     {
-        try {
-            Assert::isInstanceOf($this->orderRepository, OrderRepositoryInterface::class);
-            $order = $this->orderRepository->find($orderSynchronization->getOrderId());
-            if (!$order instanceof OrderInterface) {
-                throw new UnrecoverableMessageHandlingException(
-                    sprintf(
-                        'Order with id %s has not been found.',
-                        $orderSynchronization->getOrderId(),
-                    ),
-                );
-            }
-
-            $this->orderUpdateManager->handle($order);
-        } catch (\Exception $exception) {
-            if ($exception instanceof RecoverableMessageHandlingException) {
-                throw $exception;
-            }
-
-            throw new UnrecoverableMessageHandlingException($exception->getMessage());
+        Assert::isInstanceOf($this->orderRepository, OrderRepositoryInterface::class);
+        $order = $this->orderRepository->find($orderSynchronization->getOrderId());
+        if (!$order instanceof OrderInterface) {
+            throw new UnrecoverableMessageHandlingException(
+                sprintf(
+                    'Order with id %s has not been found.',
+                    $orderSynchronization->getOrderId(),
+                ),
+            );
         }
+
+        $this->orderUpdateManager->handle($order);
     }
 }

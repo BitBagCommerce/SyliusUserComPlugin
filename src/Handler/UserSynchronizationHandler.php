@@ -31,49 +31,39 @@ final class UserSynchronizationHandler
         private readonly RepositoryInterface $customerRepository,
         private readonly UserComApiAwareResourceProviderInterface $userComApiAwareResourceProvider,
         private readonly CustomerUpdateManagerInterface $updateManager,
-        private readonly LoggerInterface $logger,
     ) {
     }
 
     public function __invoke(UserSynchronization $userSynchronization): void
     {
-        try {
-            Assert::isInstanceOf($this->customerRepository, CustomerRepositoryInterface::class);
-            Assert::isInstanceOf($this->addressRepository, AddressRepositoryInterface::class);
+        Assert::isInstanceOf($this->customerRepository, CustomerRepositoryInterface::class);
+        Assert::isInstanceOf($this->addressRepository, AddressRepositoryInterface::class);
 
-            $customer = $this->customerRepository->find($userSynchronization->getCustomerId());
-            Assert::isInstanceOf($customer, CustomerInterface::class);
+        $customer = $this->customerRepository->find($userSynchronization->getCustomerId());
+        Assert::isInstanceOf($customer, CustomerInterface::class);
 
-            $email = $userSynchronization->getEmail();
+        $email = $userSynchronization->getEmail();
 
-            $addressId = $userSynchronization->getAddressId();
-            $address = $this->getAddress($addressId);
+        $addressId = $userSynchronization->getAddressId();
+        $address = $this->getAddress($addressId);
 
-            $resourceId = $userSynchronization->getUserComApiAwareResourceId();
+        $resourceId = $userSynchronization->getUserComApiAwareResourceId();
 
-            $userComApiAwareResource = $this->userComApiAwareResourceProvider->getApiAwareResourceById($resourceId);
-            if (null === $userComApiAwareResource) {
-                throw new UnrecoverableMessageHandlingException('User.com API-aware resource not found');
-            }
-
-            $eventName = $userSynchronization->getEventName();
-
-            $this->updateManager->manageChange(
-                $eventName,
-                $userComApiAwareResource,
-                $customer,
-                $address,
-                $email,
-                $userSynchronization->getUserComCookie(),
-            );
-        } catch (\Exception $exception) {
-            $this->logger->critical(sprintf('User.com synchronization failed - %s', $exception->getMessage()));
-            if ($exception instanceof RecoverableMessageHandlingException) {
-                throw $exception;
-            }
-
-            throw new UnrecoverableMessageHandlingException($exception->getMessage());
+        $userComApiAwareResource = $this->userComApiAwareResourceProvider->getApiAwareResourceById($resourceId);
+        if (null === $userComApiAwareResource) {
+            throw new UnrecoverableMessageHandlingException('User.com API-aware resource not found');
         }
+
+        $eventName = $userSynchronization->getEventName();
+
+        $this->updateManager->manageChange(
+            $eventName,
+            $userComApiAwareResource,
+            $customer,
+            $address,
+            $email,
+            $userSynchronization->getUserComCookie(),
+        );
     }
 
     private function getAddress(?int $addressId): ?AddressInterface

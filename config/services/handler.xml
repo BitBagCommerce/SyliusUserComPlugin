@@ -22,7 +22,6 @@
             <argument type="service" id="sylius.repository.customer"/>
             <argument type="service" id="bit_bag.sylius_user_com_plugin.provider.user_com_api_aware_resource_provider"/>
             <argument type="service" id="bit_bag.sylius_user_com_plugin.manager.customer_update_manager"/>
-            <argument type="service" id="monolog.logger.user_com"/>
             <tag name="messenger.message_handler"/>
         </service>
     </services>
