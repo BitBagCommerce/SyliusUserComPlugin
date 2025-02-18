@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusUserComPlugin\Api;
 
+use BitBag\SyliusUserComPlugin\Exception\UserComServerException;
 use BitBag\SyliusUserComPlugin\Manager\UserComApiTokenManagerInterface;
 use BitBag\SyliusUserComPlugin\Trait\UserComApiAwareInterface;
 use Psr\Log\LoggerInterface;

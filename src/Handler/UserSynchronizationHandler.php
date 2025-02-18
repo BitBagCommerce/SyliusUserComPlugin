@@ -14,13 +14,11 @@ namespace BitBag\SyliusUserComPlugin\Handler;
 use BitBag\SyliusUserComPlugin\Manager\CustomerUpdateManagerInterface;
 use BitBag\SyliusUserComPlugin\Message\UserSynchronization;
 use BitBag\SyliusUserComPlugin\Provider\UserComApiAwareResourceProviderInterface;
-use Psr\Log\LoggerInterface;
 use Sylius\Component\Core\Model\AddressInterface;
 use Sylius\Component\Core\Model\CustomerInterface;
 use Sylius\Component\Core\Repository\AddressRepositoryInterface;
 use Sylius\Component\Core\Repository\CustomerRepositoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
-use Symfony\Component\Messenger\Exception\RecoverableMessageHandlingException;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Webmozart\Assert\Assert;
 
