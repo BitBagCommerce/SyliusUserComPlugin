@@ -13,6 +13,13 @@ namespace BitBag\SyliusUserComPlugin\Trait;
 
 interface UserComApiAwareInterface
 {
+    /**
+     * To ensure compatibility with ResourceInterface, return type must be missing
+     *
+     * @phpstan-ignore-next-line
+     */
+    public function getId();
+
     public function getUserComUrl(): ?string;
 
     public function setUserComUrl(string $userComUrl): void;

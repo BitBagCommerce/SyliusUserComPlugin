@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusUserComPlugin\Handler;
+namespace BitBag\SyliusUserComPlugin\Manager;
 
 use BitBag\SyliusUserComPlugin\Api\DealApiInterface;
 use BitBag\SyliusUserComPlugin\Api\ProductApiInterface;
@@ -23,7 +23,7 @@ use Sylius\Component\Product\Model\ProductInterface;
 use Sylius\Component\Product\Model\ProductVariantInterface;
 use Webmozart\Assert\Assert;
 
-final class OrderStateUpdateHandler implements OrderStateUpdateHandlerInterface
+final class OrderUpdateManager implements OrderUpdateManagerInterface
 {
     public function __construct(
         private readonly OrderPayloadBuilderInterface $orderPayloadBuilder,

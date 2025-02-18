@@ -9,7 +9,7 @@ monolog:
             type: stream
             path: "%kernel.logs_dir%/%kernel.environment%.user_com.log"
             level: debug
-            channels: ["user_com"]
+            channels: ["user_com", "messenger"]
         firephp:
             type: firephp
             level: info

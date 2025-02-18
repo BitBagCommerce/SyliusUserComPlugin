@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusUserComPlugin\Api;
 
+use BitBag\SyliusUserComPlugin\Exception\UserComServerException;
 use BitBag\SyliusUserComPlugin\Manager\UserComApiTokenManagerInterface;
 use BitBag\SyliusUserComPlugin\Trait\UserComApiAwareInterface;
 use Psr\Log\LoggerInterface;
@@ -66,6 +67,16 @@ abstract class AbstractClient
                 return $response->toArray();
             }
 
+            if ($status > 499 && $status < 600) {
+                throw new UserComServerException(
+                    sprintf(
+                        'Response status code : %s, response : %s',
+                        $status,
+                        $response->getContent(false),
+                    ),
+                );
+            }
+
             throw new \Exception(
                 sprintf(
                     'Response status code : %s, response : %s',
@@ -82,6 +93,10 @@ abstract class AbstractClient
                 'method' => $method,
                 'options' => $options,
             ]);
+
+            if ($e instanceof UserComServerException) {
+                throw $e;
+            }
 
             if (isset($response) &&
                 $response->getStatusCode() === Response::HTTP_NOT_FOUND

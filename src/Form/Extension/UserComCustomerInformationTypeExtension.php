@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusUserComPlugin\Form\Extension;
 
-use BitBag\SyliusUserComPlugin\EventSubscriber\CustomerProfileUpdatedSubscriber;
 use Sylius\Bundle\CoreBundle\Form\Type\Checkout\AddressType;
 use Sylius\Bundle\CoreBundle\Form\Type\Customer\CustomerRegistrationType;
 use Sylius\Bundle\CustomerBundle\Form\Type\CustomerProfileType;
@@ -23,15 +22,12 @@ use Symfony\Component\Form\FormBuilderInterface;
 final class UserComCustomerInformationTypeExtension extends AbstractTypeExtension
 {
     public function __construct(
-        private readonly CustomerProfileUpdatedSubscriber $customerProfileUpdatedSubscriber,
         private readonly CustomerContextInterface $customerContext,
     ) {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->addEventSubscriber($this->customerProfileUpdatedSubscriber);
-
         if (
             false === $builder->has('customer') &&
             false === $builder->has('email') &&

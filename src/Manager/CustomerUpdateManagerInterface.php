@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusUserComPlugin\Manager;
 
+use BitBag\SyliusUserComPlugin\Trait\UserComApiAwareInterface;
 use Sylius\Component\Core\Model\AddressInterface;
 use Sylius\Component\Core\Model\CustomerInterface;
 
@@ -18,8 +19,10 @@ interface CustomerUpdateManagerInterface
 {
     public function manageChange(
         string $eventName,
+        UserComApiAwareInterface $apiAwareResource,
         ?CustomerInterface $customer = null,
         ?AddressInterface $address = null,
         ?string $email = null,
+        ?string $userKey = null,
     ): array|null;
 }

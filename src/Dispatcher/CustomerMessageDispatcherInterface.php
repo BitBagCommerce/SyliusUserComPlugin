@@ -9,19 +9,20 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusUserComPlugin\Updater;
+namespace BitBag\SyliusUserComPlugin\Dispatcher;
 
 use BitBag\SyliusUserComPlugin\Trait\UserComApiAwareInterface;
 use Sylius\Component\Core\Model\AddressInterface;
 use Sylius\Component\Core\Model\CustomerInterface;
 
-interface CustomerWithoutKeyUpdaterInterface
+interface CustomerMessageDispatcherInterface
 {
-    public function updateWithoutUserKey(
+    public function dispatch(
         string $eventName,
-        UserComApiAwareInterface $userApiAwareResource,
+        UserComApiAwareInterface $apiAwareResource,
+        ?string $cookie,
         ?CustomerInterface $customer = null,
         ?AddressInterface $address = null,
         ?string $email = null,
-    ): array|null;
+    ): void;
 }

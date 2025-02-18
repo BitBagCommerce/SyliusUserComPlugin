@@ -66,6 +66,20 @@ final class UserComApiAwareResourceProvider implements UserComApiAwareResourcePr
         return $resource;
     }
 
+    public function getApiAwareResourceById(mixed $id): ?UserComApiAwareInterface
+    {
+        Assert::isInstanceOf($this->channelRepository, ChannelRepositoryInterface::class);
+        $resource = $this->channelRepository->find($id);
+
+        if (!$resource instanceof UserComApiAwareInterface) {
+            $this->addLogMessage('getApiAwareResourceById');
+
+            return null;
+        }
+
+        return $resource;
+    }
+
     private function addLogMessage(string $method): void
     {
         $this->logger->warning('User.com API aware resource not found using ' . $method);

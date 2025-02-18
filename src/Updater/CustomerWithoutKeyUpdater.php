@@ -33,15 +33,11 @@ class CustomerWithoutKeyUpdater implements CustomerWithoutKeyUpdaterInterface
 
     public function updateWithoutUserKey(
         string $eventName,
+        UserComApiAwareInterface $userApiAwareResource,
         ?CustomerInterface $customer = null,
         ?AddressInterface $address = null,
         ?string $email = null,
     ): array|null {
-        $userApiAwareResource = $this->userComApiAwareResourceProvider->getApiAwareResource();
-        if (null === $userApiAwareResource) {
-            throw new \RuntimeException('User.com API resource could not be found.');
-        }
-
         $email = $this->getEmail($customer, $email);
 
         $customerFoundByEmail = $this->userApi->findUser(

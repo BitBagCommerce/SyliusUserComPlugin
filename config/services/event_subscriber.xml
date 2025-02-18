@@ -6,8 +6,14 @@
         <service
             id="bit_bag.sylius_user_com_plugin.event_subscriber.customer_profile_updated_subscriber"
             class="BitBag\SyliusUserComPlugin\EventSubscriber\CustomerProfileUpdatedSubscriber"
+            public="true"
         >
-            <argument type="service" id="bit_bag.sylius_user_com_plugin.manager.customer_update_manager"/>
+            <argument type="service" id="bit_bag.sylius_user_com_plugin.dispatcher.customer_message_dispatcher"/>
+            <argument type="service" id="bit_bag.sylius_user_com_plugin.provider.user_com_api_aware_resource_provider"/>
+            <argument type="service" id="bit_bag.sylius_user_com_plugin.manager.cookie_manager"/>
+            <argument type="service" id="request_stack"/>
+            <argument type="service" id="monolog.logger.user_com"/>
+            <tag name="kernel.event_subscriber"/>
         </service>
     </services>
 </container>

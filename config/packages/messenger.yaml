@@ -1,0 +1,13 @@
+framework:
+    messenger:
+        transports:
+            user_com_asynchronous: 
+                dsn: "%env(MESSENGER_USER_COM_ASYNCHRONOUS)%"
+                retry_strategy:
+                    max_retries: 5
+                    #1000 * 60 * 10
+                    delay: 600000
+                    multiplier: 2
+        routing:
+            BitBag\SyliusUserComPlugin\Message\OrderSynchronization: user_com_asynchronous
+            BitBag\SyliusUserComPlugin\Message\UserSynchronization: user_com_asynchronous

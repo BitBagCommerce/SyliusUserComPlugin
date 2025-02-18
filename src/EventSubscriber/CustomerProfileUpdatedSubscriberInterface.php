@@ -11,9 +11,7 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusUserComPlugin\EventSubscriber;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
-interface CustomerProfileUpdatedSubscriberInterface extends EventSubscriberInterface
+interface CustomerProfileUpdatedSubscriberInterface
 {
     public const DEFAULT_EVENT = 'undefined_event_name';
 
@@ -22,10 +20,10 @@ interface CustomerProfileUpdatedSubscriberInterface extends EventSubscriberInter
         'sylius_shop_register',
     ];
 
-    public const FORM_NAME_TO_EVENT_MAP = [
+    public const ROUTE_TO_EVENT_MAP = [
         'sylius_customer_profile' => 'customer_profile_update',
         'sylius_admin_customer_update' => 'admin_customer_update',
-        'sylius_customer_registration' => 'customer_registration',
-        'sylius_checkout_address' => 'customer_order_address_provided',
+        'sylius_shop_register' => 'customer_registration',
+        'sylius_shop_checkout_address' => 'customer_order_address_provided',
     ];
 }

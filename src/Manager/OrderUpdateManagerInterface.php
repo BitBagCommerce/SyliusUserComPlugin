@@ -9,11 +9,11 @@
 
 declare(strict_types=1);
 
-namespace BitBag\SyliusUserComPlugin\Handler;
+namespace BitBag\SyliusUserComPlugin\Manager;
 
 use Sylius\Component\Core\Model\OrderInterface;
 
-interface OrderStateUpdateHandlerInterface
+interface OrderUpdateManagerInterface
 {
     public const PRODUCT_EVENT_MAP = [
         OrderInterface::STATE_NEW => 'purchase',

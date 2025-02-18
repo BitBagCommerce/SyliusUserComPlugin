@@ -11,12 +11,15 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusUserComPlugin\Manager;
 
+use Sylius\Component\Core\Model\AdminUserInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 final class CookieManager implements CookieManagerInterface
 {
     public function __construct(
         private readonly RequestStack $requestStack,
+        private readonly TokenStorageInterface $tokenStorage,
     ) {
     }
 
@@ -24,6 +27,10 @@ final class CookieManager implements CookieManagerInterface
     {
         $request = $this->requestStack->getCurrentRequest();
         if (null === $request) {
+            return null;
+        }
+
+        if (!$this->isShopUser()) {
             return null;
         }
 
@@ -39,5 +46,17 @@ final class CookieManager implements CookieManagerInterface
             return;
         }
         $request->cookies->set(self::CHAT_COOKIE_NAME, $value);
+    }
+
+    private function isShopUser(): bool
+    {
+        $token = $this->tokenStorage->getToken();
+        $user = $token?->getUser();
+
+        if ($user instanceof AdminUserInterface) {
+            return false;
+        }
+
+        return true;
     }
 }

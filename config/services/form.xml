@@ -5,7 +5,6 @@
     <services>
         <defaults public="true"/>
         <service id="bit_bag.sylius_user_com_plugin.form.extension.user_com_customer_information_type_extension" class="BitBag\SyliusUserComPlugin\Form\Extension\UserComCustomerInformationTypeExtension">
-            <argument type="service" id="bit_bag.sylius_user_com_plugin.event_subscriber.customer_profile_updated_subscriber"/>
             <argument type="service" id="sylius.context.customer"/>
             <tag name="form.type_extension" />
         </service>
