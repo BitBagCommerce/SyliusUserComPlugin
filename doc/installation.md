@@ -1,7 +1,7 @@
 # Installation
 1. Add package to your project via composer:
     ```bash
-    composer require bitbag/user-com-plugin
+    composer require bitbag/user-com-plugin --no-scripts
     ```
 2. Add required environment variables to your `.env` file:
     ```dotenv
@@ -61,8 +61,12 @@
       enabled: true
     ```
 7. Add api credentials to your channel configuration in admin panel. If you decided to extend different object, please make sure that api credentials are set
-8. Configure consumer to run in supervisor or crontab:
+8. Run yarn install and yarn build to compile assets, or the alternative solution you use for your project
+```bash
+  yarn install && yarn build
+```
+9. Configure consumer to run in supervisor:
 ```bash
    bin/console messenger:consume user_com_asynchronous
 ```
-8. While integrating with User.com via GTM, you can use `user_com_customer_info` in browser console to check currently logged in customer data.
+10. While integrating with User.com via GTM, you can use `user_com_customer_info` in browser console to check currently logged in customer data.
