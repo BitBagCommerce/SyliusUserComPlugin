@@ -60,7 +60,7 @@ final class UserComApiAwareTypeExtension extends AbstractTypeExtension
                 'userComGTMContainerId',
                 TextType::class,
                 [
-                    'label' => 'bitbag_sylius_user_com_plugin.ui.gtm_container_id',
+                    'label' => 'bitbag_sylius_user_com_plugin.ui.user_com_gtm',
                     'required' => false,
                 ],
             )
