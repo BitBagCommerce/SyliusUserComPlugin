@@ -8,5 +8,6 @@
     <mapped-superclass name="Tests\BitBag\SyliusUserComPlugin\Entity\Channel" table="sylius_channel">
         <field name="userComUrl" column="user_com_url" type="string" nullable="true" />
         <field name="userComApiKey" column="user_com_api_key" type="string" nullable="true"/>
+        <field name="userComGTMContainerId" column="user_com_gtm_container_id" type="string" nullable="true"/>
     </mapped-superclass>
 </doctrine-mapping>
