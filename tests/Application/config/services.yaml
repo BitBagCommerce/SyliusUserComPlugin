@@ -2,7 +2,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 
 spinbits_sylius_google_analytics4:
-    id: '%env(TAG_MANAGER_ID)%'
+    id: "%env(GOOGLE_ANALYTICS_TAG)%"
 
 parameters:
     locale: en_US
