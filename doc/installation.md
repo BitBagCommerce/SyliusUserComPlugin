@@ -6,7 +6,7 @@
 2. Add required environment variables to your `.env` file:
     ```dotenv
         USER_COM_FRONTEND_API_KEY=""
-        TAG_MANAGER_ID=""
+        GOOGLE_ANALYTICS_TAG=""
         USER_COM_ENCRYPTION_KEY=your-32-character-long-key
         USER_COM_ENCRYPTION_IV=your-16-character-long-iv
         MESSENGER_USER_COM_ASYNCHRONOUS=""
@@ -56,11 +56,10 @@
 6. Take advantage of channel based configuration of GoogleAnalyticsPlugin by adding :
     ```yaml
     spinbits_sylius_google_analytics4:
-      id: "%env(TAG_MANAGER_ID)%"
-      templateName: "@BitBagSyliusUserComPlugin/_userComScripts.html.twig"
+      id: "%env(GOOGLE_ANALYTICS_TAG)%"
       enabled: true
     ```
-7. Add api credentials to your channel configuration in admin panel. If you decided to extend different object, please make sure that api credentials are set
+7. Add api credentials and GTM to your channel configuration in admin panel. If you decided to extend different object, please make sure that api credentials are set
 8. Run yarn install and yarn build to compile assets, or the alternative solution you use for your project
 ```bash
   yarn install && yarn build

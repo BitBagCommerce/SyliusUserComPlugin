@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <defaults autowire="false" autoconfigure="false"/>
+        <service
+            id="bit_bag.sylius_user_com_plugin.twig.user_com_api_aware_extension"
+            class="BitBag\SyliusUserComPlugin\Twig\UserComApiAwareExtension"
+            public="true"
+        >
+            <argument type="service" id="bit_bag.sylius_user_com_plugin.provider.user_com_api_aware_resource_provider"/>
+            <tag name="twig.extension"/>
+        </service>
+    </services>
+</container>

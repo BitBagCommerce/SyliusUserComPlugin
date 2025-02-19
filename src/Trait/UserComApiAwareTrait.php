@@ -17,11 +17,15 @@ trait UserComApiAwareTrait
 {
     #[ORM\Column(name: 'user_com_url', type: 'string', nullable: true)]
     /** @ORM\Column(name="user_com_url", type="string", nullable=true) */
-    private ?string $userComUrl;
+    private ?string $userComUrl = null;
 
     #[ORM\Column(name: 'user_com_api_key', type: 'string', nullable: true)]
     /** @ORM\Column(name="user_com_api_key", type="string", nullable=true) */
-    private ?string $userComApiKey;
+    private ?string $userComApiKey = null;
+
+    #[ORM\Column(name: 'user_com_gtmcontainer_id', type: 'string', nullable: true)]
+    /** @ORM\Column(name="user_com_gtmcontainer_id", type="string", nullable=true) */
+    private ?string $userComGTMContainerId = null;
 
     public function getUserComUrl(): ?string
     {
@@ -41,5 +45,15 @@ trait UserComApiAwareTrait
     public function setUserComApiKey(?string $userComApiKey): void
     {
         $this->userComApiKey = $userComApiKey;
+    }
+
+    public function getUserComGTMContainerId(): ?string
+    {
+        return $this->userComGTMContainerId;
+    }
+
+    public function setUserComGTMContainerId(?string $userComGTMContainerId): void
+    {
+        $this->userComGTMContainerId = $userComGTMContainerId;
     }
 }
