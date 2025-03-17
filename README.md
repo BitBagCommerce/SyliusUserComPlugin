@@ -47,8 +47,7 @@ We have a 70-person team of experts: business analysts and consultants, eCommerc
 ***
 
 * [Overview](#overview)
-* [Installation](#installation)
-* [Testing](#testing)
+* [Important documents](#important-documents)
 * [Functionalities](#functionalities)
 * [Demo](#demo)
 * [License](#license)
@@ -58,8 +57,7 @@ We have a 70-person team of experts: business analysts and consultants, eCommerc
 # Overview
 
 ----
-The **SyliusUserComPlugin** allows you to integrate your Sylius store with the User.com platform. User.com is a platform that allows you to automate your marketing, sales, and support processes. With this plugin, you can synchronize your Sylius store with User.com and use the data collected in your store to create personalized marketing campaigns, automate sales processes, and provide better customer support.
-
+The **SyliusUserComPlugin** is designed to seamlessly integrate User.com with any Sylius platform app, enabling businesses to monitor customer activity, synchronize agreements, and track orders effortlessly. This plugin acts as a bridge between Sylius and User.com, ensuring businesses gain valuable behavioral insights while enhancing user engagement and retention.
 # Important documents
 
 ---
