@@ -28,7 +28,7 @@ final class AgreementsAssigner implements AgreementsAssignerInterface
                 'email_agreement' => $customer->setSubscribedToNewsletter($value),
                 default => $this->logger->error(
                     sprintf(
-                        'Agreement not found. Key = %s, Value = %s, CustomerId = %s',
+                        'User.com - Agreement not found. Key = %s, Value = %s, CustomerId = %s',
                         $key,
                         $value,
                         $customer->getId(),

@@ -27,7 +27,7 @@ final class OrderMessageDispatcher implements OrderMessageDispatcherInterface
     public function dispatch(OrderInterface $order): void
     {
         if (null === $order->getId()) {
-            $this->logger->error('Order ID cannot be null');
+            $this->logger->error('User.com - Order ID cannot be null');
 
             return;
         }

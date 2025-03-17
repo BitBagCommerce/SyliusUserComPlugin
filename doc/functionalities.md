@@ -29,3 +29,6 @@ The **BitBagSyliusUserComPlugin** integrates **User.com** with Sylius-based stor
 ### 6. Tag Manager Script Injection
 - Allows users to **inject custom scripts** via **Tag Manager**.
 - Enables integration with **third-party tracking tools**.
+
+### 7. User information object 
+- you can use `user_com_customer_info` in browser console to check currently logged in customer data

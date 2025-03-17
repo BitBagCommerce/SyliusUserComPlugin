@@ -9,7 +9,7 @@
         GOOGLE_ANALYTICS_TAG=""
         USER_COM_ENCRYPTION_KEY=your-32-character-long-key
         USER_COM_ENCRYPTION_IV=your-16-character-long-iv
-        MESSENGER_USER_COM_ASYNCHRONOUS=""
+        MESSENGER_USER_COM_ASYNCHRONOUS_DSN=""
     ```
 3. Add plugin dependencies to `config/bundles.php` file. Make sure that none of the bundles are duplicated.
     ```php
@@ -33,13 +33,13 @@
         ...
     ```
 
-4. Import routes in your `config/routes.yaml` file:
+5. Import routes in your `config/routes.yaml` file:
     ```yaml
         bitbag_sylius_user_com_plugin:
             resource: "@BitBagSyliusUserComPlugin/config/routes.yaml"
     ```
 
-5. Extend `Channel` entity `UserComApiAwareTrait` and implement `UserComApiAwareInterface` 
+6. Extend `Channel` entity `UserComApiAwareTrait` and implement `UserComApiAwareInterface` 
    ```php
     use BitBag\SyliusUserComPlugin\Trait\UserComApiAwareTrait;
     use BitBag\SyliusUserComPlugin\Trait\UserComApiAwareInterface;
@@ -50,22 +50,22 @@
     }
     ```
     
-    >`UserComApiAwareTrait` contains mapping for annotations and for attributes which are required by UserCom integration.
-    > If you're using xml mapping, you should add mapping for those properties in your `Channel.orm.xml` file.
+    >`UserComApiAwareTrait` contains mapping for annotations and for attributes which are required by UserCom integration. If you're using xml mapping, you should add mapping for those properties in your `Channel.orm.xml` file.
 
-6. Take advantage of channel based configuration of GoogleAnalyticsPlugin by adding :
+7. Take advantage of channel based configuration of GoogleAnalyticsPlugin by adding :
     ```yaml
     spinbits_sylius_google_analytics4:
       id: "%env(GOOGLE_ANALYTICS_TAG)%"
       enabled: true
     ```
-7. Add api credentials and GTM to your channel configuration in admin panel. If you decided to extend different object, please make sure that api credentials are set
-8. Run yarn install and yarn build to compile assets, or the alternative solution you use for your project
+8. Compile assets
 ```bash
   yarn install && yarn build
 ```
-9. Configure consumer to run in supervisor:
+9. Add API credentials and GTM to your channel configuration in admin panel. If you decided to extend different object, please make sure that API credentials are set.
+![Channel configuration](../doc/user_com_configuration.png)
+
+10. Configure consumer to run in supervisor:
 ```bash
    bin/console messenger:consume user_com_asynchronous
 ```
-10. While integrating with User.com via GTM, you can use `user_com_customer_info` in browser console to check currently logged in customer data.
