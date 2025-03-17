@@ -59,11 +59,12 @@
       id: "%env(GOOGLE_ANALYTICS_TAG)%"
       enabled: true
     ```
-7. Add api credentials and GTM to your channel configuration in admin panel. If you decided to extend different object, please make sure that api credentials are set
 8. Run yarn install and yarn build to compile assets, or the alternative solution you use for your project
 ```bash
   yarn install && yarn build
 ```
+7. Add api credentials and GTM to your channel configuration in admin panel. If you decided to extend different object, please make sure that api credentials are set
+![Channel configuration](../doc/user_com_configuration.png)
 9. Configure consumer to run in supervisor:
 ```bash
    bin/console messenger:consume user_com_asynchronous

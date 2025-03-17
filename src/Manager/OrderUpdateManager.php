@@ -91,7 +91,7 @@ final class OrderUpdateManager implements OrderUpdateManagerInterface
         try {
             $eventType = self::PRODUCT_EVENT_MAP[$order->getState()] ?? null;
             if (null === $eventType) {
-                $this->logger->warning(sprintf('Order #%s state "%s" is not supported.', $order->getNumber(), $order->getState()));
+                $this->logger->warning(sprintf('User.com - Order #%s state "%s" is not supported.', $order->getNumber(), $order->getState()));
 
                 return;
             }
@@ -99,7 +99,7 @@ final class OrderUpdateManager implements OrderUpdateManagerInterface
             foreach ($order->getItems() as $orderItem) {
                 $variant = $orderItem->getVariant();
                 if (null === $variant) {
-                    $this->logger->warning(sprintf('Order item #%s does not have a variant.', $orderItem->getId()));
+                    $this->logger->warning(sprintf('User.com - Order item #%s does not have a variant.', $orderItem->getId()));
 
                     continue;
                 }
