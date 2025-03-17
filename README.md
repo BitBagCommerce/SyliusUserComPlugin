@@ -60,25 +60,12 @@ We have a 70-person team of experts: business analysts and consultants, eCommerc
 ----
 The **SyliusUserComPlugin** allows you to integrate your Sylius store with the User.com platform. User.com is a platform that allows you to automate your marketing, sales, and support processes. With this plugin, you can synchronize your Sylius store with User.com and use the data collected in your store to create personalized marketing campaigns, automate sales processes, and provide better customer support.
 
+# Important documents
 
-# Installation
-----
+---
 
-
-# Testing
-----
-
-```bash
-$ composer install
-$ cd tests/Application
-$ yarn install
-$ yarn build
-$ bin/console assets:install public -e test
-$ bin/console doctrine:schema:create -e test
-$ bin/console server:run 127.0.0.1:8080 -d public -e test
-$ open http://localhost:8080
-$ vendor/bin/behat
-```
+- [Installation](doc/installation.md)
+- [Adjustments](doc/adjustments.md)
 
 # Functionalities
 
@@ -89,7 +76,9 @@ All main functionalities of the plugin are described **[here.](https://github.co
 If you need some help with Sylius development, don't be hesitated to contact us directly. You can fill the form on [this site](https://bitbag.io/contact-us/?utm_source=github&utm_medium=referral&utm_campaign=plugins_productbundle) or send us an e-mail at hello@bitbag.io!
 
 ---
+
 # Demo
+
 ---
 We created a demo app with some useful use-cases of plugins! Visit http://demo.sylius.com/ to take a look at it.
 
@@ -99,6 +88,7 @@ We created a demo app with some useful use-cases of plugins! Visit http://demo.s
 
 
 # Additional resources for developers
+
 ---
 To learn more about our contribution workflow and more, we encourage you to use the following resources:
 * [Sylius Documentation](https://docs.sylius.com/en/latest/)
@@ -107,6 +97,7 @@ To learn more about our contribution workflow and more, we encourage you to use 
 * [Sylius Product Bundle Plugin Blog](https://bitbag.io/blog/product-bundling-sylius)
 
 # License
+
 ---
 
 This plugin's source code is completely free and released under the terms of the MIT license.
@@ -114,10 +105,12 @@ This plugin's source code is completely free and released under the terms of the
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen.)
 
 # Contact
+
 ---
 This open-source plugin was developed to help the Sylius community. If you have any additional questions, would like help with installing or configuring the plugin, or need any assistance with your Sylius project - let us know! **Contact us** or send us an **e-mail to hello@bitbag.io** with your question(s).
 
 # Community
+
 ---- 
 
 For online communication, we invite you to chat with us & other users on **[Sylius Slack](https://sylius-devs.slack.com/).**
