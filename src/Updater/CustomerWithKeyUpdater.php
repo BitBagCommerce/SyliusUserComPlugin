@@ -133,11 +133,12 @@ class CustomerWithKeyUpdater extends CustomerWithoutKeyUpdater implements Custom
         ;
 
         $id = $customerFoundByEmailId ?? $userFromUserKey['id'];
+        $payload = $this->buildPayload($email, $customer, $address);
 
         $user = $this->userApi->updateUser(
             $apiAwareResource,
             $id,
-            $this->buildPayload($email, $customer, $address),
+            $payload,
         );
 
         if (is_array($customerFoundByEmail) &&
@@ -147,7 +148,7 @@ class CustomerWithKeyUpdater extends CustomerWithoutKeyUpdater implements Custom
             $this->userApi->mergeUsers($apiAwareResource, $customerFoundByEmail['id'], [$userFromUserKey['id']]);
         }
 
-        $this->sendEvent($apiAwareResource, $email, $eventName);
+        $this->sendEvent($apiAwareResource, $email, $eventName, $payload);
 
         return $user;
     }

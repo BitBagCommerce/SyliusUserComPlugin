@@ -63,7 +63,7 @@ class CustomerWithoutKeyUpdater implements CustomerWithoutKeyUpdaterInterface
         if (false === is_array($user) || false === array_key_exists('id', $user)) {
             throw new \RuntimeException('User was not created or updated.');
         }
-        $this->sendEvent($userApiAwareResource, $user['email'], $eventName);
+        $this->sendEvent($userApiAwareResource, $user['email'], $eventName, $payload);
 
         return $user;
     }
@@ -76,13 +76,14 @@ class CustomerWithoutKeyUpdater implements CustomerWithoutKeyUpdaterInterface
         return $this->customerPayloadBuilder->build($email, $customer, $address);
     }
 
-    protected function sendEvent(UserComApiAwareInterface $resource, string $userCustomId, string $event): void
+    protected function sendEvent(UserComApiAwareInterface $resource, string $userCustomId, string $event, ?array $payload = null): void
     {
         $this->userApi->createEventForUser(
             $resource,
             $userCustomId,
             [
                 'name' => $event,
+                'data' => $payload,
             ],
         );
     }
