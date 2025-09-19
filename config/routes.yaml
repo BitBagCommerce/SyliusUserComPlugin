@@ -1,6 +1,3 @@
-setono_sylius_feed:
-    resource: "@SetonoSyliusFeedPlugin/Resources/config/routing.yaml"
-
 bitbag_user_com_customer_agreements_endpoint:
     path: /user-com/customer-agreements
     controller: bit_bag.sylius_user_com_plugin.controller.user_com_agreements_controller

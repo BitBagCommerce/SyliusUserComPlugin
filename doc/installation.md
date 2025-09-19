@@ -16,9 +16,6 @@
         ...
             BitBag\SyliusUserComPlugin\BitBagSyliusUserComPlugin::class => ['all' => true],
             League\FlysystemBundle\FlysystemBundle::class => ['all' => true],
-            Setono\SyliusFeedPlugin\SetonoSyliusFeedPlugin::class => ['all' => true],
-            Setono\DoctrineORMBatcherBundle\SetonoDoctrineORMBatcherBundle::class => ['all' => true],
-           //Sylius grid bundle should be under Setono\SyliusFeedPlugin\SetonoSyliusFeedPlugin
             Sylius\Bundle\GridBundle\SyliusGridBundle::class => ['all' => true],
         ...
     ];
