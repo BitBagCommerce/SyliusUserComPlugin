@@ -6,7 +6,6 @@
 2. Add required environment variables to your `.env` file:
     ```dotenv
         USER_COM_FRONTEND_API_KEY=""
-        GOOGLE_ANALYTICS_TAG=""
         USER_COM_ENCRYPTION_KEY=your-32-character-long-key
         USER_COM_ENCRYPTION_IV=your-16-character-long-iv
         MESSENGER_USER_COM_ASYNCHRONOUS_DSN=""
@@ -16,7 +15,6 @@
     return [
         ...
             BitBag\SyliusUserComPlugin\BitBagSyliusUserComPlugin::class => ['all' => true],
-            Spinbits\SyliusGoogleAnalytics4Plugin\SpinbitsSyliusGoogleAnalytics4Plugin::class => ['all' => true],
             League\FlysystemBundle\FlysystemBundle::class => ['all' => true],
             Setono\SyliusFeedPlugin\SetonoSyliusFeedPlugin::class => ['all' => true],
             Setono\DoctrineORMBatcherBundle\SetonoDoctrineORMBatcherBundle::class => ['all' => true],
@@ -51,21 +49,15 @@
     ```
     
     >`UserComApiAwareTrait` contains mapping for annotations and for attributes which are required by UserCom integration. If you're using xml mapping, you should add mapping for those properties in your `Channel.orm.xml` file.
-
-7. Take advantage of channel based configuration of GoogleAnalyticsPlugin by adding :
-    ```yaml
-    spinbits_sylius_google_analytics4:
-      id: "%env(GOOGLE_ANALYTICS_TAG)%"
-      enabled: true
-    ```
-8. Compile assets
+   
+7. Compile assets
 ```bash
   yarn install && yarn build
 ```
-9. Add API credentials and GTM to your channel configuration in admin panel. If you decided to extend different object, please make sure that API credentials are set.
+8. Add API credentials and GTM to your channel configuration in admin panel. If you decided to extend different object, please make sure that API credentials are set.
 ![Channel configuration](../doc/user_com_configuration.png)
 
-10. Configure consumer to run in supervisor:
+9. Configure consumer to run in supervisor:
 ```bash
    bin/console messenger:consume user_com_asynchronous
 ```

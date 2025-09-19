@@ -24,7 +24,3 @@ sylius_channel:
         channel:
             classes:
                 model: Tests\BitBag\SyliusUserComPlugin\Entity\Channel
-
-spinbits_sylius_google_analytics4:
-    id: "%env(GOOGLE_ANALYTICS_TAG)%"
-    enabled: true
