@@ -33,7 +33,7 @@ final class CustomerPayloadBuilder implements CustomerPayloadBuilderInterface
             'city' => $address?->getCity(),
             'gender' => null !== $customer ? self::GENDER_MAP[$customer->getGender()] : null,
             'status' => null !== $customer ? self::STATUS_USER : self::STATUS_VISITOR,
-            'unsubscribed' => null !== $customer ? !$customer->isSubscribedToNewsletter() : null,
+            'email_consent' => $customer?->isSubscribedToNewsletter(),
         ];
 
         return array_filter($payload, fn ($value) => null !== $value);

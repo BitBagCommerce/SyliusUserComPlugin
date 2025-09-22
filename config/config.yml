@@ -12,5 +12,3 @@ imports:
     - { resource: "events.yaml" }
     - { resource: "monolog.yaml" }
     - { resource: "packages/*" }
-
-    - { resource: "@SetonoSyliusFeedPlugin/Resources/config/app/config.yaml" }
