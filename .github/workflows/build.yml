@@ -9,28 +9,43 @@ on:
             cron: "0 1 * * 6" # Run at 1am every Saturday
     workflow_dispatch: ~
 
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+    
 jobs:
     tests:
         runs-on: ubuntu-latest
 
-        name: "Sylius ${{ matrix.sylius }}, PHP ${{ matrix.php }}, Symfony ${{ matrix.symfony }}, MySQL ${{ matrix.mysql }}"
+        name: "Sylius ${{ matrix.sylius }}, PHP ${{ matrix.php }}, Symfony ${{ matrix.symfony }}, MySQL ${{ matrix.mysql }}, State Machine Adapter ${{ matrix.state_machine_adapter }}"
 
         strategy:
             fail-fast: false
             matrix:
-                php: ["8.1", "8.2", "8.3"]
-                sylius: ["~1.13.0", "~1.14.0"]
-                symfony: ["^5.4", "^6.4"]
-                node: ["20.x"]
+                php: ["8.2", "8.3", "8.4"]
+                sylius: ["~2.0.0", "~2.1.0"]
+                symfony: ["^6.4", "^7.0"]
+                node: ["22.x"]
                 mysql: ["8.0"]
+                state_machine_adapter: [ "symfony_workflow" ]
+
+                include:
+                    -   php: "8.3"
+                        symfony: "^6.4"
+                        sylius: "~2.1.0"
+                        node: "22.x"
+                        database: "mysql"
+                        mysql: "8.4"
+                        state_machine_adapter: "winzou_state_machine"
 
         env:
             APP_ENV: test
             DATABASE_URL: "mysql://root:root@127.0.0.1/sylius?serverVersion=${{ matrix.mysql }}"
+            TEST_SYLIUS_STATE_MACHINE_ADAPTER: "${{ matrix.state_machine_adapter }}"
 
         steps:
             -
-                uses: actions/checkout@v3
+                uses: actions/checkout@v4
 
             -
                 name: Setup PHP
@@ -130,16 +145,16 @@ jobs:
                 run: (cd tests/Application && yarn install)
 
             -
-                name: Prepare test application database
-                run: |
-                    (cd tests/Application && bin/console doctrine:database:create -vvv)
-                    (cd tests/Application && bin/console doctrine:schema:create -vvv)
-
-            -
                 name: Prepare test application assets
                 run: |
-                    (cd tests/Application && bin/console assets:install public -vvv)
-                    (cd tests/Application && yarn build:prod)
+                    vendor/bin/console assets:install -vvv
+                    yarn --cwd vendor/sylius/test-application encore prod
+
+            -
+                name: Prepare test application database
+                run: |
+                    vendor/bin/console doctrine:database:create -vvv
+                    vendor/bin/console doctrine:migrations:migrate --no-interaction -vvv
 
             -
                 name: Prepare test application cache
