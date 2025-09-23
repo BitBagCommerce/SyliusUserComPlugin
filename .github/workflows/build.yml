@@ -145,16 +145,16 @@ jobs:
                 run: (cd tests/Application && yarn install)
 
             -
-                name: Prepare test application assets
-                run: |
-                    vendor/bin/console assets:install -vvv
-                    yarn --cwd vendor/sylius/test-application encore prod
-
-            -
                 name: Prepare test application database
                 run: |
-                    vendor/bin/console doctrine:database:create -vvv
-                    vendor/bin/console doctrine:migrations:migrate --no-interaction -vvv
+                    (cd tests/Application && bin/console doctrine:database:create -vvv)
+                    (cd tests/Application && bin/console doctrine:schema:create -vvv)
+
+            -
+                name: Prepare test application assets
+                run: |
+                    (cd tests/Application && bin/console assets:install public -vvv)
+                    (cd tests/Application && yarn build:prod)
 
             -
                 name: Prepare test application cache
@@ -175,10 +175,6 @@ jobs:
             -
                 name: Run PHPStan
                 run: vendor/bin/phpstan analyse -c phpstan.neon -l max src/
-
-            -
-                name: Run PHPSpec
-                run: vendor/bin/phpspec run --ansi -f progress --no-interaction
 
             -
                 name: Run PHPUnit

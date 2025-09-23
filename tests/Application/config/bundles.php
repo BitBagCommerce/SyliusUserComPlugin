@@ -69,6 +69,10 @@ $bundles = [
     BitBag\SyliusUserComPlugin\BitBagSyliusUserComPlugin::class => ['all' => true],
 ];
 
+if (class_exists(FriendsOfBehat\SymfonyExtension\Bundle\FriendsOfBehatSymfonyExtensionBundle::class)) {
+    $bundles[FriendsOfBehat\SymfonyExtension\Bundle\FriendsOfBehatSymfonyExtensionBundle::class] = ['test' => true, 'test_cached' => true];
+}
+
 if (class_exists(winzou\Bundle\StateMachineBundle\winzouStateMachineBundle::class)) {
     $bundles[winzou\Bundle\StateMachineBundle\winzouStateMachineBundle::class] = ['all' => true];
 }

@@ -1,2 +1,5 @@
-imports:
-    - { resource: "../test/mailer.yaml" }
+framework:
+    cache:
+        pools:
+            test.mailer_pool:
+                adapter: cache.adapter.filesystem
