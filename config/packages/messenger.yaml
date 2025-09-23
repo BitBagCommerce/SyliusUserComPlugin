@@ -8,6 +8,6 @@ framework:
                     #1000 * 60 * 10
                     delay: 600000
                     multiplier: 2
-        routing:
-            BitBag\SyliusUserComPlugin\Message\OrderSynchronization: user_com_asynchronous
-            BitBag\SyliusUserComPlugin\Message\UserSynchronization: user_com_asynchronous
+#        routing:
+#            BitBag\SyliusUserComPlugin\Message\OrderSynchronization: user_com_asynchronous
+#            BitBag\SyliusUserComPlugin\Message\UserSynchronization: user_com_asynchronous

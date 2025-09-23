@@ -25,10 +25,10 @@ use Webmozart\Assert\Assert;
 final class UserSynchronizationHandler
 {
     public function __construct(
-        private readonly RepositoryInterface $addressRepository,
-        private readonly RepositoryInterface $customerRepository,
-        private readonly UserComApiAwareResourceProviderInterface $userComApiAwareResourceProvider,
-        private readonly CustomerUpdateManagerInterface $updateManager,
+        private RepositoryInterface $addressRepository,
+        private RepositoryInterface $customerRepository,
+        private UserComApiAwareResourceProviderInterface $userComApiAwareResourceProvider,
+        private CustomerUpdateManagerInterface $updateManager,
     ) {
     }
 

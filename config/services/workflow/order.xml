@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service
+            id="sylius_user_com_plugin.listener.workflow.order.order_user_com_update"
+            class="BitBag\SyliusUserComPlugin\EventListener\Workflow\Order\OrderCompleteListener"
+        >
+            <argument type="service" id="messenger.default_bus"/>
+            <argument type="service" id="monolog.logger.user_com"/>
+            <tag name="kernel.event_listener" event="workflow.sylius_order.completed.create" priority="100" />
+            <tag name="kernel.event_listener" event="workflow.sylius_order.completed.cancel" priority="100" />
+            <tag name="kernel.event_listener" event="workflow.sylius_order.completed.fulfill" priority="100" />
+        </service>
+
+    </services>
+</container>
