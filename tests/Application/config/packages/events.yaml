@@ -1,7 +1,0 @@
-sylius_ui:
-    events:
-        sylius.admin.channel.form.first_column_content:
-            blocks:
-                user_com_configuration:
-                    template: '@BitBagSyliusUserComPlugin/UserApiResource/_userComCredentials.html.twig'
-                    priority: 25

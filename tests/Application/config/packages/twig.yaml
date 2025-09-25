@@ -1,7 +1,6 @@
 parameters:
     user_com.frontend_api_key: '%env(USER_COM_FRONTEND_API_KEY)%'
 
-
 twig:
     paths: ['%kernel.project_dir%/templates']
     debug: '%kernel.debug%'
@@ -9,11 +8,10 @@ twig:
     globals:
         user_com_frontend_api_key: '%user_com.frontend_api_key%'
 
-
 services:
     _defaults:
         public: false
         autowire: true
         autoconfigure: true
 
-    Twig\Extra\Intl\IntlExtension: ~
+#    Twig\Extra\Intl\IntlExtension: ~
