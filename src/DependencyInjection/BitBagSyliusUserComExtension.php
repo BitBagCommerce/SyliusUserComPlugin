@@ -33,7 +33,7 @@ final class BitBagSyliusUserComExtension extends AbstractResourceExtension imple
 
     protected function getMigrationsNamespace(): string
     {
-        return 'Sylius\BitBagSyliusUserComPlugin\Migrations';
+        return 'BitBag\SyliusUserComPlugin\Migrations';
     }
 
 
