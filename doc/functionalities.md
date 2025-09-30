@@ -22,9 +22,8 @@ The **BitBagSyliusUserComPlugin** integrates **User.com** with Sylius-based stor
 ### 4. Event-Driven System
 - Each customer interaction generates an **event**, which is stored and sent to **User.com** for automation and reporting.
 
-### 5. Product Persistence & Feed Generation
+### 5. Product Persistence
 - **Persists products** within the system for accurate data reporting.
-- Generates a **product feed** that can be used for marketing and analytics purposes.
 
 ### 6. Tag Manager Script Injection
 - Allows users to **inject custom scripts** via **Tag Manager**.
