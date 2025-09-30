@@ -28,7 +28,7 @@ final class UserApi extends AbstractClient implements UserApiInterface
         $url = $this->getApiEndpointUrl(
             $resource,
             self::FIND_USER_ENDPOINT,
-            sprintf('?%s=%s', $field, $value),
+            sprintf('?%s=%s', $field, rawurlencode($value)),
         );
 
         return $this->request(
