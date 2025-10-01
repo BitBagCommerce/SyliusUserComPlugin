@@ -2,15 +2,34 @@
 {% set active =  constant('BitBag\\SyliusUserComPlugin\\Builder\\Payload\\CustomerPayloadBuilderInterface::STATUS_USER')%}
 {% set visitor =  constant('BitBag\\SyliusUserComPlugin\\Builder\\Payload\\CustomerPayloadBuilderInterface::STATUS_VISITOR')%}
 {% set customer = sylius.customer|default(null) %}
-<script data-cfasync="false">const user_com_customer_info= {
-        name: "{{ customer.name|default(null) }}",
-        user_id: "{{ customer.email|default(null) }}",
-        email: "{{ customer.email|default(null) }}",
-        gender: {{ null != customer ? genderMap[customer.gender] : genderMap['u'] }},
-        status: {{ null != customer ? active : visitor }},
-        phone_number: "{{ customer.phone_number|default(null)}}",
-    }
-</script>
+{% if customer is not null %}
+    <script data-cfasync="false">
+        const user_com_customer_info = {
+            {% if customer.fullName is not empty %}
+                name: "{{ customer.fullName }}",
+            {% endif %}
+            {% if customer.email is not empty %}
+                user_id: "{{ customer.email }}",
+                email: "{{ customer.email }}",
+            {% endif %}
+            {% if customer.phoneNumber is not empty %}
+                phone_number: "{{ customer.phoneNumber }}",
+            {% endif %}
+            {% if customer.gender in genderMap and genderMap[customer.gender] in [2, 3] %}
+                gender: {{ genderMap[customer.gender] }},
+            {% else %}
+                gender: undefined,
+            {% endif %}
+            status: {{ active }}
+        };
+    </script>
+{% else %}
+    <script data-cfasync="false">
+        const user_com_customer_info = {
+            status: {{ visitor }}
+        };
+    </script>
+{% endif %}
 {% set apiAwareResource = getUserComApiAwareResource() %}
 
 {% if null != apiAwareResource and null != apiAwareResource.userComGTMContainerId %}
