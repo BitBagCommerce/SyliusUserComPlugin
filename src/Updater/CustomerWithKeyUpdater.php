@@ -84,10 +84,9 @@ class CustomerWithKeyUpdater extends CustomerWithoutKeyUpdater implements Custom
                 $payload,
             );
 
-            if (false === is_array($user) || false === array_key_exists('email', $user)) {
-                throw new \RuntimeException('User was not created or updated.');
+            if (!is_array($user) || !isset($user['email']) || !is_string($user['email'])) {
+                throw new \RuntimeException('User was not created or updated (missing email).');
             }
-
             $this->sendEvent($apiAwareResource, $user['email'], $eventName, $payload);
 
             return $user;
