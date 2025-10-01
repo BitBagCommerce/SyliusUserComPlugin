@@ -36,7 +36,6 @@ final class BitBagSyliusUserComExtension extends AbstractResourceExtension imple
         return 'BitBag\SyliusUserComPlugin\Migrations';
     }
 
-
     protected function getMigrationsDirectory(): string
     {
         return '@BitBagSyliusUserComPlugin/src/Migrations';
@@ -48,7 +47,6 @@ final class BitBagSyliusUserComExtension extends AbstractResourceExtension imple
             'Sylius\Bundle\CoreBundle\Migrations',
         ];
     }
-
 
     private function getCurrentConfiguration(ContainerBuilder $container): array
     {

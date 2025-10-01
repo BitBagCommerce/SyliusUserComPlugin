@@ -21,5 +21,9 @@
             <argument type="service" id="monolog.logger.user_com"/>
             <argument type="service" id="bit_bag.sylius_user_com_plugin.manager.user_com_api_token_manager"/>
         </service>
+
+        <service id="bit_bag.sylius_user_com_plugin.openapi.factory" class="BitBag\SyliusUserComPlugin\OpenApi\OpenApiFactory" decorates="api_platform.openapi.factory">
+            <argument type="service" id="bit_bag.sylius_user_com_plugin.openapi.factory.inner" />
+        </service>
     </services>
 </container>
