@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<resources xmlns="https://api-platform.com/schema/metadata"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="https://api-platform.com/schema/metadata https://api-platform.com/schema/metadata/metadata-2.0.xsd">
+
+    <resource class="BitBag\SyliusUserComPlugin\Api\Resource\UserComAgreements"
+              shortName="UserComAgreements">
+
+        <collectionOperations>
+            <collectionOperation name="bitbag_usercom_agreements">
+                <attribute name="method">POST</attribute>
+                <attribute name="path">/user-com/customer-agreements</attribute>
+                <attribute name="controller">bit_bag.sylius_user_com_plugin.controller.user_com_agreements_controller</attribute>
+
+                <attribute name="deserialize">false</attribute>
+                <attribute name="read">false</attribute>
+                <attribute name="validate">false</attribute>
+                <attribute name="output">false</attribute>
+
+                <attribute name="formats">
+                    <attribute name="text"><attribute>text/plain</attribute></attribute>
+                    <attribute name="json"><attribute>application/json</attribute></attribute>
+                </attribute>
+
+                <attribute name="openapi_context">
+                    <attribute name="summary">Synchronize user agreements coming from User.com</attribute>
+                    <attribute name="tags">
+                        <attribute>UserCom</attribute>
+                    </attribute>
+
+                    <attribute name="parameters">
+                        <attribute>
+                            <attribute name="name">X-User-Com-Signature</attribute>
+                            <attribute name="in">header</attribute>
+                            <attribute name="required">false</attribute>
+                            <attribute name="schema">
+                                <attribute name="type">string</attribute>
+                            </attribute>
+                            <attribute name="description">Request signature</attribute>
+                        </attribute>
+                    </attribute>
+
+                    <attribute name="requestBody">
+                        <attribute name="required">true</attribute>
+                        <attribute name="description">User.com agreements payload</attribute>
+                        <attribute name="content">
+                            <attribute name="application/json">
+                                <attribute name="schema">
+                                    <attribute name="type">object</attribute>
+                                    <attribute name="required">
+                                        <attribute>extra</attribute>
+                                    </attribute>
+                                    <attribute name="properties">
+                                        <attribute name="extra">
+                                            <attribute name="type">object</attribute>
+                                            <attribute name="required">
+                                                <attribute>email</attribute>
+                                                <attribute>agreements</attribute>
+                                            </attribute>
+                                            <attribute name="properties">
+                                                <attribute name="email">
+                                                    <attribute name="type">string</attribute>
+                                                    <attribute name="format">email</attribute>
+                                                    <attribute name="example">john.doe@example.com</attribute>
+                                                </attribute>
+                                                <attribute name="agreements">
+                                                    <attribute name="type">object</attribute>
+                                                    <attribute name="additionalProperties">
+                                                        <attribute name="type">boolean</attribute>
+                                                    </attribute>
+                                                    <attribute name="example">
+                                                        <attribute name="email_agreement">true</attribute>
+                                                    </attribute>
+                                                </attribute>
+                                            </attribute>
+                                        </attribute>
+                                    </attribute>
+                                </attribute>
+                            </attribute>
+                        </attribute>
+                    </attribute>
+
+                    <attribute name="responses">
+                        <attribute name="200">
+                            <attribute name="description">OK</attribute>
+                            <attribute name="content">
+                                <attribute name="text/plain">
+                                    <attribute name="schema">
+                                        <attribute name="type">string</attribute>
+                                        <attribute name="example">OK</attribute>
+                                    </attribute>
+                                </attribute>
+                            </attribute>
+                        </attribute>
+                        <attribute name="400">
+                            <attribute name="description">Invalid JSON payload</attribute>
+                        </attribute>
+                        <attribute name="401">
+                            <attribute name="description">Unauthorized</attribute>
+                        </attribute>
+                        <attribute name="404">
+                            <attribute name="description">Not found</attribute>
+                        </attribute>
+                        <attribute name="500">
+                            <attribute name="description">Internal server error</attribute>
+                        </attribute>
+                    </attribute>
+                </attribute>
+            </collectionOperation>
+        </collectionOperations>
+        <itemOperations/>
+    </resource>
+</resources>

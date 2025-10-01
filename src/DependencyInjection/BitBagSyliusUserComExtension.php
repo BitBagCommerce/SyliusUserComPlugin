@@ -26,6 +26,13 @@ final class BitBagSyliusUserComExtension extends AbstractResourceExtension imple
     public function prepend(ContainerBuilder $container): void
     {
         $this->prependDoctrineMigrations($container);
+        $pluginRoot = \dirname(__DIR__, 2);
+        $xmlMappingDir = $pluginRoot . '/config/api_resources';
+        if (\is_dir($xmlMappingDir)) {
+            $container->prependExtensionConfig('api_platform', [
+                'mapping' => ['paths' => [$xmlMappingDir]],
+            ]);
+        }
     }
 
     protected function getMigrationsNamespace(): string
