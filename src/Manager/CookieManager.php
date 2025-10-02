@@ -47,7 +47,7 @@ final class CookieManager implements CookieManagerInterface
     {
         $cookie = Cookie::create(self::CHAT_COOKIE_NAME)
             ->withValue($value)
-            ->withPath('')
+            ->withPath('/')
             ->withSecure(true)
             ->withHttpOnly(true)
             ->withSameSite('lax');
