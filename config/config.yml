@@ -2,7 +2,8 @@ parameters:
     user_com.frontend_api_key: '%env(USER_COM_FRONTEND_API_KEY)%'
     user_com.encryption_key: '%env(USER_COM_ENCRYPTION_KEY)%'
     user_com.encryption_iv: '%env(USER_COM_ENCRYPTION_IV)%'
-
+    user_com.cookie_domain: '%env(USER_COM_COOKIE_DOMAIN)%'
+    
 twig:
     globals:
         user_com_frontend_api_key: '%user_com.frontend_api_key%'
