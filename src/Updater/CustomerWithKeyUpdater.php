@@ -107,7 +107,6 @@ class CustomerWithKeyUpdater extends CustomerWithoutKeyUpdater implements Custom
                 $payload,
             );
 
-            $this->userApi->mergeUsers($apiAwareResource, $userByEmailFromForm['id'], [$userFoundByKey['id']]);
             if (is_array($user) && isset($user['email']) && is_string($user['email'])) {
                 $this->sendEvent($apiAwareResource, $user['email'], $eventName, $payload);
             }
