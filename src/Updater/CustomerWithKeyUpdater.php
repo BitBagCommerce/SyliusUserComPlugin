@@ -108,13 +108,19 @@ class CustomerWithKeyUpdater extends CustomerWithoutKeyUpdater implements Custom
             );
 
             $this->userApi->mergeUsers($apiAwareResource, $userByEmailFromForm['id'], [$userFoundByKey['id']]);
-            $this->changeCookieWithEvent($user, $apiAwareResource, $eventName, $payload);
+            if (is_array($user) && isset($user['email']) && is_string($user['email'])) {
+                $this->sendEvent($apiAwareResource, $user['email'], $eventName, $payload);
+            }
+            $this->changeCookie($user);
 
             return $user;
         }
 
         $user = $this->userApi->createUser($apiAwareResource, $payload);
-        $this->changeCookieWithEvent($user, $apiAwareResource, $eventName, $payload);
+
+        if (is_array($user) && isset($user['email']) && is_string($user['email'])) {
+            $this->sendEvent($apiAwareResource, $user['email'], $eventName, $payload);
+        }        $this->changeCookie($user);
 
         return $user;
     }
@@ -154,16 +160,16 @@ class CustomerWithKeyUpdater extends CustomerWithoutKeyUpdater implements Custom
             $this->userApi->mergeUsers($apiAwareResource, $customerFoundByEmail['id'], [$userFromUserKey['id']]);
         }
 
-        $this->changeCookieWithEvent($user, $apiAwareResource, $eventName);
+        if (is_array($user) && isset($user['email']) && is_string($user['email'])) {
+            $this->sendEvent($apiAwareResource, $user['email'], $eventName, $payload);
+        }
+        $this->changeCookie($user);
 
         return $user;
     }
 
-    public function changeCookieWithEvent(
+    public function changeCookie(
         ?array $user,
-        UserComApiAwareInterface $apiAwareResource,
-        string $eventName,
-        ?array $payload = null,
     ): void {
         if (false === is_array($user) ||
             false === array_key_exists('id', $user) ||
@@ -173,6 +179,5 @@ class CustomerWithKeyUpdater extends CustomerWithoutKeyUpdater implements Custom
         }
 
         $this->cookieManager->setUserComCookie($user['user_key']);
-        $this->sendEvent($apiAwareResource, $user['email'], $eventName, $payload);
     }
 }
