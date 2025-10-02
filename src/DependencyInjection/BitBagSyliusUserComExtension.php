@@ -6,6 +6,7 @@ namespace BitBag\SyliusUserComPlugin\DependencyInjection;
 
 use Sylius\Bundle\CoreBundle\DependencyInjection\PrependDoctrineMigrationsTrait;
 use Sylius\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractResourceExtension;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
@@ -26,16 +27,18 @@ final class BitBagSyliusUserComExtension extends AbstractResourceExtension imple
     public function prepend(ContainerBuilder $container): void
     {
         $this->prependDoctrineMigrations($container);
+
+        $config = $this->getCurrentConfiguration($container);
     }
 
     protected function getMigrationsNamespace(): string
     {
-        return 'DoctrineMigrations';
+        return 'BitBag\SyliusUserComPlugin\Migrations';
     }
 
     protected function getMigrationsDirectory(): string
     {
-        return '@BitBagSyliusUserComPlugin/migrations';
+        return '@BitBagSyliusUserComPlugin/src/Migrations';
     }
 
     protected function getNamespacesOfMigrationsExecutedBefore(): array
@@ -43,5 +46,15 @@ final class BitBagSyliusUserComExtension extends AbstractResourceExtension imple
         return [
             'Sylius\Bundle\CoreBundle\Migrations',
         ];
+    }
+
+    private function getCurrentConfiguration(ContainerBuilder $container): array
+    {
+        /** @var ConfigurationInterface $configuration */
+        $configuration = $this->getConfiguration([], $container);
+
+        $configs = $container->getExtensionConfig($this->getAlias());
+
+        return $this->processConfiguration($configuration, $configs);
     }
 }

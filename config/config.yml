@@ -1,3 +1,9 @@
+imports:
+    - { resource: "@BitBagSyliusUserComPlugin/config/twig_hooks/**/*.yaml" }
+    - { resource: "@BitBagSyliusUserComPlugin/config/monolog.yaml" }
+    - { resource: "@BitBagSyliusUserComPlugin/config/packages/*" }
+    - { resource: "@BitBagSyliusUserComPlugin/config/winzou_state_machine.php" }
+
 parameters:
     user_com.frontend_api_key: '%env(USER_COM_FRONTEND_API_KEY)%'
     user_com.encryption_key: '%env(USER_COM_ENCRYPTION_KEY)%'
@@ -7,9 +13,3 @@ parameters:
 twig:
     globals:
         user_com_frontend_api_key: '%user_com.frontend_api_key%'
-
-imports: 
-    - { resource: "state_machine/*" }
-    - { resource: "events.yaml" }
-    - { resource: "monolog.yaml" }
-    - { resource: "packages/*" }

@@ -107,7 +107,7 @@ abstract class AbstractClient
     protected function getApiEndpointUrl(
         UserComApiAwareInterface $resource,
         string $endpoint,
-        string $query = null,
+        ?string $query = null,
     ): string {
         if (null === $resource->getUserComUrl()) {
             throw new \InvalidArgumentException('User.com API key is missing.');
