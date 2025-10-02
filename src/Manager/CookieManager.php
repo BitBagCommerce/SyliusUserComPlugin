@@ -11,7 +11,9 @@ declare(strict_types=1);
 
 namespace BitBag\SyliusUserComPlugin\Manager;
 
+use BitBag\SyliusUserComPlugin\Cookie\CookieQueueInterface;
 use Sylius\Component\Core\Model\AdminUserInterface;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -20,6 +22,8 @@ final class CookieManager implements CookieManagerInterface
     public function __construct(
         private readonly RequestStack $requestStack,
         private readonly TokenStorageInterface $tokenStorage,
+        private readonly CookieQueueInterface $queue,
+        private readonly ?string $cookieDomain = null,
     ) {
     }
 
@@ -41,11 +45,29 @@ final class CookieManager implements CookieManagerInterface
 
     public function setUserComCookie(string $value): void
     {
-        $request = $this->requestStack->getCurrentRequest();
-        if (null === $request) {
-            return;
+        $cookie = Cookie::create(self::CHAT_COOKIE_NAME)
+            ->withValue($value)
+            ->withPath('/')
+            ->withSecure(true)
+            ->withExpires(new \DateTimeImmutable('+1 year'))
+            ->withHttpOnly(false)
+            ->withSameSite('lax');
+
+        if (null !== $this->cookieDomain && '' !== $this->cookieDomain) {
+            $cookie = $cookie->withDomain($this->cookieDomain);
+        } else {
+            $request = $this->requestStack->getCurrentRequest();
+            if (null === $request) {
+                return;
+            }
+
+            $domain = $this->getBaseDomain($request->getHost());
+            if (null !== $domain) {
+                $cookie = $cookie->withDomain($domain);
+            }
         }
-        $request->cookies->set(self::CHAT_COOKIE_NAME, $value);
+
+        $this->queue->queue($cookie);
     }
 
     private function isShopUser(): bool
@@ -58,5 +80,23 @@ final class CookieManager implements CookieManagerInterface
         }
 
         return true;
+    }
+
+    private function getBaseDomain(string $host): ?string
+    {
+        $host = (string) preg_replace('/:\d+$/', '', $host);
+
+        if ($host === 'localhost' || filter_var($host, \FILTER_VALIDATE_IP) !== false) {
+            return null;
+        }
+
+        $parts = explode('.', $host);
+        $count = count($parts);
+
+        if ($count >= 2) {
+            return '.' . $parts[$count - 2] . '.' . $parts[$count - 1];
+        }
+
+        return null;
     }
 }
