@@ -15,5 +15,13 @@
             <argument type="service" id="monolog.logger.user_com"/>
             <tag name="kernel.event_subscriber"/>
         </service>
+
+        <service id="bit_bag.sylius_user_com_plugin.event_subscriber.cookie_flusher_subscriber" class="BitBag\SyliusUserComPlugin\EventSubscriber\CookieFlusherSubscriber">
+            <argument type="service" id="bit_bag.sylius_user_com_plugin.cookie.cookie_queue" />
+            <tag name="kernel.event_listener"
+                 event="kernel.response"
+                 method="onResponse"
+                 priority="0"/>
+        </service>
     </services>
 </container>

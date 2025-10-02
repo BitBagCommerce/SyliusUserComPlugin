@@ -154,7 +154,7 @@ class CustomerWithKeyUpdater extends CustomerWithoutKeyUpdater implements Custom
             $this->userApi->mergeUsers($apiAwareResource, $customerFoundByEmail['id'], [$userFromUserKey['id']]);
         }
 
-        $this->sendEvent($apiAwareResource, $email, $eventName, $payload);
+        $this->changeCookieWithEvent($user, $apiAwareResource, $eventName);
 
         return $user;
     }
