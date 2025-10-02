@@ -49,11 +49,22 @@ final class CookieManager implements CookieManagerInterface
             ->withValue($value)
             ->withPath('/')
             ->withSecure(true)
-            ->withHttpOnly(true)
+            ->withExpires(new \DateTimeImmutable('+1 year'))
+            ->withHttpOnly(false)
             ->withSameSite('lax');
 
         if (null !== $this->cookieDomain && '' !== $this->cookieDomain) {
             $cookie = $cookie->withDomain($this->cookieDomain);
+        } else {
+            $request = $this->requestStack->getCurrentRequest();
+            if (null === $request) {
+                return;
+            }
+
+            $domain = $this->getBaseDomain($request->getHost());
+            if (null !== $domain) {
+                $cookie = $cookie->withDomain($domain);
+            }
         }
 
         $this->queue->queue($cookie);
@@ -69,5 +80,23 @@ final class CookieManager implements CookieManagerInterface
         }
 
         return true;
+    }
+
+    private function getBaseDomain(string $host): ?string
+    {
+        $host = (string) preg_replace('/:\d+$/', '', $host);
+
+        if ($host === 'localhost' || filter_var($host, \FILTER_VALIDATE_IP) !== false) {
+            return null;
+        }
+
+        $parts = explode('.', $host);
+        $count = count($parts);
+
+        if ($count >= 2) {
+            return '.' . $parts[$count - 2] . '.' . $parts[$count - 1];
+        }
+
+        return null;
     }
 }
