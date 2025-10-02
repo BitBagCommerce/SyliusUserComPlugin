@@ -120,7 +120,8 @@ class CustomerWithKeyUpdater extends CustomerWithoutKeyUpdater implements Custom
 
         if (is_array($user) && isset($user['email']) && is_string($user['email'])) {
             $this->sendEvent($apiAwareResource, $user['email'], $eventName, $payload);
-        }        $this->changeCookie($user);
+        }
+        $this->changeCookie($user);
 
         return $user;
     }
