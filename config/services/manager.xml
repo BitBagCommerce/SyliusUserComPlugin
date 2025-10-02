@@ -10,6 +10,7 @@
             <argument type="service" id="request_stack"/>
             <argument type="service" id="security.token_storage"/>
             <argument type="service" id="bit_bag.sylius_user_com_plugin.cookie.cookie_queue"/>
+            <argument>%user_com.cookie_domain%</argument>
         </service>
 
         <service

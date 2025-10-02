@@ -23,6 +23,7 @@ final class CookieManager implements CookieManagerInterface
         private readonly RequestStack $requestStack,
         private readonly TokenStorageInterface $tokenStorage,
         private readonly CookieQueueInterface $queue,
+        private readonly ?string $cookieDomain = null,
     ) {
     }
 
@@ -50,6 +51,10 @@ final class CookieManager implements CookieManagerInterface
             ->withSecure(true)
             ->withHttpOnly(true)
             ->withSameSite('lax');
+
+        if (null !== $this->cookieDomain && '' !== $this->cookieDomain) {
+            $cookie = $cookie->withDomain($this->cookieDomain);
+        }
 
         $this->queue->queue($cookie);
     }
