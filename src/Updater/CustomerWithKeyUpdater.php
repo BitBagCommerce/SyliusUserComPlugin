@@ -78,11 +78,18 @@ class CustomerWithKeyUpdater extends CustomerWithoutKeyUpdater implements Custom
             null !== $customer->getEmail() &&
             $userFoundByKey['email'] === strtolower($customer->getEmail())
         ) {
-            return $this->userApi->updateUser(
+            $user = $this->userApi->updateUser(
                 $apiAwareResource,
                 $userFoundByKey['id'],
                 $payload,
             );
+
+            if (!is_array($user) || !isset($user['email']) || !is_string($user['email'])) {
+                throw new \RuntimeException('User was not created or updated (missing email).');
+            }
+            $this->sendEvent($apiAwareResource, $user['email'], $eventName, $payload);
+
+            return $user;
         }
 
         $userByEmailFromForm = $this->userApi->findUser(
@@ -101,14 +108,13 @@ class CustomerWithKeyUpdater extends CustomerWithoutKeyUpdater implements Custom
             );
 
             $this->userApi->mergeUsers($apiAwareResource, $userByEmailFromForm['id'], [$userFoundByKey['id']]);
-
-            $this->changeCookieWithEvent($user, $apiAwareResource, $eventName);
+            $this->changeCookieWithEvent($user, $apiAwareResource, $eventName, $payload);
 
             return $user;
         }
 
         $user = $this->userApi->createUser($apiAwareResource, $payload);
-        $this->changeCookieWithEvent($user, $apiAwareResource, $eventName);
+        $this->changeCookieWithEvent($user, $apiAwareResource, $eventName, $payload);
 
         return $user;
     }
@@ -157,6 +163,7 @@ class CustomerWithKeyUpdater extends CustomerWithoutKeyUpdater implements Custom
         ?array $user,
         UserComApiAwareInterface $apiAwareResource,
         string $eventName,
+        ?array $payload = null,
     ): void {
         if (false === is_array($user) ||
             false === array_key_exists('id', $user) ||
@@ -166,6 +173,6 @@ class CustomerWithKeyUpdater extends CustomerWithoutKeyUpdater implements Custom
         }
 
         $this->cookieManager->setUserComCookie($user['user_key']);
-        $this->sendEvent($apiAwareResource, $user['email'], $eventName);
+        $this->sendEvent($apiAwareResource, $user['email'], $eventName, $payload);
     }
 }
