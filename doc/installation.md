@@ -8,8 +8,13 @@
         USER_COM_FRONTEND_API_KEY=""
         USER_COM_ENCRYPTION_KEY=your-32-character-long-key
         USER_COM_ENCRYPTION_IV=your-16-character-long-iv
+        USER_COM_COOKIE_DOMAIN=""
         MESSENGER_USER_COM_ASYNCHRONOUS_DSN=""
     ```
+   - You can find the `USER_COM_FRONTEND_API_KEY` in the User.Com integration guide for `Google Tag Manager (Settings->Setup & Integrations)`. 
+   - `USER_COM_COOKIE_DOMAIN` is optional, if not set, cookies will be set for the current domain.
+
+
 3. Add plugin dependencies to `config/bundles.php` file. Make sure that none of the bundles are duplicated.
     ```php
     return [

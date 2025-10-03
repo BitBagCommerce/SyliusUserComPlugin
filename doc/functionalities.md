@@ -31,3 +31,8 @@ The **BitBagSyliusUserComPlugin** integrates **User.com** with Sylius-based stor
 
 ### 7. User information object 
 - you can use `user_com_customer_info` in browser console to check currently logged in customer data
+
+### 8. Webhook Endpoint: Updating User Marketing Consents
+- Exposes a dedicated endpoint for handling User.com webhooks (`UserComAgreements` in `Swagger`),
+allowing the update of user marketing consents. By default, it manages the `subscribedToNewsletter` flag,
+but the mechanism is fully extensible to support additional types of consents.”
