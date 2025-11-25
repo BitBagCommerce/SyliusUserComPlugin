@@ -10,6 +10,11 @@ There is designated validator to check if request payload contains required fiel
 If there will be any field added by User.com, you can adjust this validator to check if this field is present in request payload.
 Also, in `BitBag\SyliusUserComPlugin\Assigner\AgreementsAssigner` you can adjust existing logic to assign agreements to customer in a way that suits your needs.
 
+The endpoint is exposed in `Swagger` under `UserComAgreements`, making it easy to test and explore directly from the API documentation.
+
+>If you use several channels, remember to select one of the available channels using the get method and parameters before using the API:
+`?_channel_code=CHANNEL_CODE`
+
 ```php
 public function assign(CustomerInterface $customer, array $agreements): void
     {

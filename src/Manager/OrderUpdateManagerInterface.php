@@ -16,8 +16,8 @@ use Sylius\Component\Core\Model\OrderInterface;
 interface OrderUpdateManagerInterface
 {
     public const PRODUCT_EVENT_MAP = [
-        OrderInterface::STATE_NEW => 'purchase',
-        OrderInterface::STATE_FULFILLED => 'reservation',
+        OrderInterface::STATE_NEW => 'order',
+        OrderInterface::STATE_FULFILLED => 'purchase',
         OrderInterface::STATE_CANCELLED => 'remove',
     ];
 

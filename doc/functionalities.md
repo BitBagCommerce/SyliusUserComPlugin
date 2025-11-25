@@ -22,9 +22,8 @@ The **BitBagSyliusUserComPlugin** integrates **User.com** with Sylius-based stor
 ### 4. Event-Driven System
 - Each customer interaction generates an **event**, which is stored and sent to **User.com** for automation and reporting.
 
-### 5. Product Persistence & Feed Generation
+### 5. Product Persistence
 - **Persists products** within the system for accurate data reporting.
-- Generates a **product feed** that can be used for marketing and analytics purposes.
 
 ### 6. Tag Manager Script Injection
 - Allows users to **inject custom scripts** via **Tag Manager**.
@@ -32,3 +31,8 @@ The **BitBagSyliusUserComPlugin** integrates **User.com** with Sylius-based stor
 
 ### 7. User information object 
 - you can use `user_com_customer_info` in browser console to check currently logged in customer data
+
+### 8. Webhook Endpoint: Updating User Marketing Consents
+- Exposes a dedicated endpoint for handling User.com webhooks (`UserComAgreements` in `Swagger`),
+allowing the update of user marketing consents. By default, it manages the `subscribedToNewsletter` flag,
+but the mechanism is fully extensible to support additional types of consents.”
