@@ -11,8 +11,15 @@
         USER_COM_COOKIE_DOMAIN=""
         MESSENGER_USER_COM_ASYNCHRONOUS_DSN=""
     ```
-   - You can find the `USER_COM_FRONTEND_API_KEY` in the User.Com integration guide for `Google Tag Manager (Settings->Setup & Integrations)`. 
-   - `USER_COM_COOKIE_DOMAIN` is optional, if not set, cookies will be set for the current domain.
+    - You can find the `USER_COM_FRONTEND_API_KEY` in the User.Com integration guide for `Google Tag Manager (Settings->Setup & Integrations)`.
+    - `USER_COM_ENCRYPTION_KEY` and `USER_COM_ENCRYPTION_IV` are required for cookie encryption.
+- You can generate the encryption key and IV using the following command:
+    ```bash
+      php -r '$key = bin2hex(random_bytes(16)); echo "USER_COM_ENCRYPTION_KEY=\"" . $key . "\"\n"; $iv = bin2hex(random_bytes(8)); echo "USER_COM_ENCRYPTION_IV=\"" . $iv . "\"\n";'
+    ```
+    - `MESSENGER_USER_COM_ASYNCHRONOUS_DSN` is the DSN for the messenger transport that will handle asynchronous messages. You can use different transports like `doctrine://default`, `amqp://guest:guest@localhost:5672/%2f/messages`, etc.
+
+    - `USER_COM_COOKIE_DOMAIN` is optional, if not set, cookies will be set for the current domain.
 
 
 3. Add plugin dependencies to `config/bundles.php` file. Make sure that none of the bundles are duplicated.
