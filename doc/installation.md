@@ -58,15 +58,21 @@
     ```
     
     >`UserComApiAwareTrait` contains mapping for annotations and for attributes which are required by UserCom integration. If you're using xml mapping, you should add mapping for those properties in your `Channel.orm.xml` file.
-   
-7. Compile assets
+
+7. Database migrations
+```bash
+  bin/console doctrine:migrations:diff
+  bin/console doctrine:migrations:migrate
+```   
+
+8. Compile assets
 ```bash
   yarn install && yarn build
 ```
-8. Add API credentials and GTM to your channel configuration in admin panel. If you decided to extend different object, please make sure that API credentials are set.
+9. Add API credentials and GTM to your channel configuration in admin panel. If you decided to extend different object, please make sure that API credentials are set.
 ![Channel configuration](../doc/user_com_configuration.png)
 
-9. Configure consumer to run in supervisor:
+10. Configure consumer to run in supervisor:
 ```bash
    bin/console messenger:consume user_com_asynchronous
 ```
